@@ -3,8 +3,6 @@ Repositório do site da casa Julieta de sorocaba.
 
 ## Publicação
 
-O projeto está preparado para deploy automático no GitHub Pages via workflow:
+O site está publicado no GitHub Pages com origem na branch `main` (pasta raiz).
 
-- `.github/workflows/deploy-pages.yml`
-
-Ao fazer push na branch `main`, o GitHub Actions publica o site.
+URL: `http://andremachado.design/Casa-Julieta/`
