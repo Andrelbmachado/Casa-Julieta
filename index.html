@@ -1,160 +1,174 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Casa Julieta | Centro Histórico de Sorocaba</title>
-    <meta name="description" content="Casa Julieta — um prédio histórico no centro de Sorocaba que reúne bar, café, moda, bem-estar e hospedagem em um só endereço." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- Header -->
-    <header class="site-header">
-      <div class="container nav-bar">
-        <a href="index.html" class="brand">Casa Julieta</a>
-        <button class="menu-toggle" aria-label="Abrir menu">
-          <span></span><span></span><span></span>
-        </button>
-        <nav class="main-nav">
-          <a href="#sobre">Sobre</a>
-          <a href="#espacos">Espaços</a>
-          <a href="#localizacao">Localização</a>
-          <a href="#contato">Contato</a>
-        </nav>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa Julieta — Sorocaba</title>
+  <meta name="description" content="Casa Julieta — bar, café, loja, massagem e airbnb no coração de Sorocaba." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Velvet canvas background -->
+  <canvas id="velvet-canvas"></canvas>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container nav-bar">
+      <a href="index.html" class="brand">Casa Julieta</a>
+      <nav class="main-nav" id="nav">
+        <a href="#sobre">Sobre</a>
+        <a href="#espacos">Espaços</a>
+        <a href="#localizacao">Localização</a>
+        <a href="#contato">Contato</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container">
+      <nav class="breadcrumb">
+        <span class="icon current" style="font-size:16px">home</span>
+        <span class="current">Home</span>
+      </nav>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-content fade-up">
+        <span class="tag">Sorocaba — Centro Histórico</span>
+        <h1>Casa Julieta</h1>
+        <p class="hero-sub">Um casarão centenário reinventado em espaço de cultura, gastronomia e bem-estar.</p>
+        <div class="hero-actions">
+          <a href="#espacos" class="btn btn-gold">Explorar Espaços</a>
+          <a href="https://www.instagram.com/acasajulieta/" target="_blank" rel="noopener" class="btn btn-outline">Instagram</a>
+        </div>
       </div>
-    </header>
+    </section>
 
-    <main>
-      <!-- Hero -->
-      <section class="hero">
-        <div class="container hero-content fade-up">
-          <p class="tag">Centro Histórico de Sorocaba</p>
-          <h1>Casa Julieta</h1>
-          <p class="hero-sub">
-            Um endereço singular onde história, gastronomia, moda, bem-estar e
-            hospedagem convergem em uma experiência sofisticada no coração da cidade.
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-gold" href="https://www.instagram.com/acasajulieta/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a class="btn btn-outline" href="mailto:casajulieta137@gmail.com">Fale Conosco</a>
-          </div>
-        </div>
-        <div class="hero-ornament"></div>
-      </section>
-
-      <!-- Sobre -->
-      <section id="sobre" class="section">
-        <div class="container fade-up">
-          <span class="section-label">Sobre a Casa</span>
-          <h2>Um patrimônio ressignificado</h2>
-          <div class="about-text">
-            <p>
-              Instalada em um prédio centenário no centro de Sorocaba, a Casa Julieta
-              é muito mais do que um endereço — é uma curadoria de experiências. Aqui, o
-              charme da arquitetura original se encontra com a energia de quem transforma
-              a cidade.
-            </p>
-            <p>
-              Cada espaço da Casa foi pensado para oferecer algo único: a sofisticação de
-              um bar autoral, o acolhimento de um café especial, a exclusividade de uma
-              curadoria de moda, o cuidado de terapias corporais e o conforto de uma
-              hospedagem com identidade. E em breve, muito mais.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Espaços -->
-      <section id="espacos" class="section section-alt">
-        <div class="container">
-          <span class="section-label fade-up">Espaços</span>
-          <h2 class="fade-up">Conheça cada ambiente</h2>
-          <div class="grid">
-            <a href="giro-bar.html" class="card fade-up">
-              <span class="card-icon">&#127864;</span>
-              <h3>Giro Bar</h3>
-              <p>Drinks autorais, boa música e o melhor da noite sorocabana em um ambiente com personalidade.</p>
-              <span class="card-link">Conheça o Giro Bar &rarr;</span>
-            </a>
-            <a href="giro-cafe.html" class="card fade-up">
-              <span class="card-icon">&#9749;</span>
-              <h3>Giro Café</h3>
-              <p>Cafés especiais, brunch refinado e momentos de pausa em um ambiente que convida à permanência.</p>
-              <span class="card-link">Conheça o Giro Café &rarr;</span>
-            </a>
-            <a href="loja.html" class="card fade-up">
-              <span class="card-icon">&#128090;</span>
-              <h3>Loja de Moda</h3>
-              <p>Curadoria autoral de moda com marcas locais e nacionais selecionadas a dedo.</p>
-              <span class="card-link">Conheça a Loja &rarr;</span>
-            </a>
-            <a href="massagem.html" class="card fade-up">
-              <span class="card-icon">&#128156;</span>
-              <h3>Espaço de Massagem</h3>
-              <p>Terapias corporais e autocuidado em um ambiente histórico, tranquilo e reservado.</p>
-              <span class="card-link">Conheça o Espaço &rarr;</span>
-            </a>
-            <a href="airbnb.html" class="card fade-up">
-              <span class="card-icon">&#127968;</span>
-              <h3>Airbnb</h3>
-              <p>Hospedagem exclusiva com identidade no centro de Sorocaba, perto de tudo que importa.</p>
-              <span class="card-link">Conheça a Hospedagem &rarr;</span>
-            </a>
-            <div class="card card-soon fade-up">
-              <span class="card-icon">&#10024;</span>
-              <h3>Em Breve</h3>
-              <p>A Casa Julieta está em constante expansão. Novos espaços e experiências estão a caminho.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Localização -->
-      <section id="localizacao" class="section">
-        <div class="container fade-up">
-          <span class="section-label">Localização</span>
-          <h2>No coração de Sorocaba</h2>
-          <p>Centro histórico — uma região de fácil acesso e forte conexão com a identidade urbana da cidade.</p>
-          <div class="map-wrapper">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3659.3!2d-47.4583!3d-23.5015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c58aa0a6f60d01%3A0x1!2sCentro%2C%20Sorocaba%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1"
-              width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade" title="Mapa Casa Julieta"></iframe>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contato -->
-      <section id="contato" class="section section-alt">
-        <div class="container fade-up">
-          <span class="section-label">Contato</span>
-          <h2>Fale com a Casa Julieta</h2>
-          <p>Reservas, parcerias, eventos ou apenas um olá — estamos à disposição.</p>
-          <ul class="contact-list">
-            <li>
-              <strong>Instagram</strong>
-              <a href="https://www.instagram.com/acasajulieta/" target="_blank" rel="noopener noreferrer">@acasajulieta</a>
-            </li>
-            <li>
-              <strong>E-mail</strong>
-              <a href="mailto:casajulieta137@gmail.com">casajulieta137@gmail.com</a>
-            </li>
-          </ul>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div class="container footer-content">
-        <p>&copy; <span id="year"></span> Casa Julieta. Todos os direitos reservados.</p>
-        <p>Criado por <a href="https://andremachado.design" target="_blank" rel="noopener noreferrer">andremachado.design</a></p>
+    <!-- SOBRE -->
+    <section id="sobre" class="section section-alt">
+      <div class="container about-text fade-up">
+        <span class="section-label">Sobre</span>
+        <h2>História viva</h2>
+        <p>A Casa Julieta ocupa um dos edifícios mais emblemáticos do centro de Sorocaba. Fundada para reunir experiências únicas sob o mesmo teto, cada andar e cada sala abriga uma proposta diferente — do sabor artesanal ao descanso pleno.</p>
       </div>
-    </footer>
+    </section>
 
-    <script src="script.js"></script>
-  </body>
+    <!-- ESPAÇOS -->
+    <section id="espacos" class="section">
+      <div class="container">
+        <span class="section-label fade-up">Espaços</span>
+        <h2 class="fade-up">O que encontrar aqui</h2>
+
+        <div class="grid">
+          <!-- Giro Bar -->
+          <a href="giro-bar.html" class="card fade-up">
+            <span class="icon card-icon">local_bar</span>
+            <h3>Giro Bar</h3>
+            <p>Drinks autorais e curadoria de rótulos em um ambiente intimista.</p>
+            <span class="card-link">Conhecer →</span>
+          </a>
+
+          <!-- Giro Café -->
+          <a href="giro-cafe.html" class="card fade-up">
+            <span class="icon card-icon">coffee</span>
+            <h3>Giro Café</h3>
+            <p>Cafés especiais, brunch e receitas com ingredientes locais.</p>
+            <span class="card-link">Conhecer →</span>
+          </a>
+
+          <!-- Loja -->
+          <a href="loja.html" class="card fade-up">
+            <span class="icon card-icon">checkroom</span>
+            <h3>Loja</h3>
+            <p>Moda autoral e peças com identidade brasileira.</p>
+            <span class="card-link">Conhecer →</span>
+          </a>
+
+          <!-- Massagem -->
+          <a href="massagem.html" class="card fade-up">
+            <span class="icon card-icon">spa</span>
+            <h3>Massagem</h3>
+            <p>Bem-estar e relaxamento com técnicas especializadas.</p>
+            <span class="card-link">Conhecer →</span>
+          </a>
+
+          <!-- Airbnb -->
+          <a href="airbnb.html" class="card fade-up">
+            <span class="icon card-icon">hotel</span>
+            <h3>Airbnb</h3>
+            <p>Hospedagem em um cenário histórico, com todo conforto.</p>
+            <span class="card-link">Conhecer →</span>
+          </a>
+
+          <!-- Em breve -->
+          <div class="card card-soon fade-up">
+            <span class="icon card-icon">more_horiz</span>
+            <h3>Em breve</h3>
+            <p>Novos espaços e experiências estão a caminho.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCALIZAÇÃO -->
+    <section id="localizacao" class="section section-alt">
+      <div class="container fade-up">
+        <span class="section-label">Localização</span>
+        <h2>Localização</h2>
+        <div class="map-wrapper">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3659.3!2d-47.458!3d-23.501!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c5f2c349d1e1b1%3A0x0!2sCentro%2C+Sorocaba+-+SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+            width="100%"
+            height="380"
+            style="border:0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="section">
+      <div class="container fade-up">
+        <span class="section-label">Contato</span>
+        <ul class="contact-list">
+          <li>
+            <strong>Instagram</strong>
+            <a href="https://www.instagram.com/acasajulieta/" target="_blank" rel="noopener">@acasajulieta</a>
+          </li>
+          <li>
+            <strong>E-mail</strong>
+            <a href="mailto:casajulieta137@gmail.com">casajulieta137@gmail.com</a>
+          </li>
+          <li>
+            <strong>Mapa</strong>
+            <a href="https://bit.ly/casajulieta" target="_blank" rel="noopener">bit.ly/casajulieta</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p>&copy; <span id="year"></span> Casa Julieta</p>
+      <p>Criado por <a href="https://andremachado.design" target="_blank" rel="noopener">andremachado.design</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
 </html>
