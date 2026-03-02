@@ -1,12 +1,24 @@
 :root {
-  --bg: #fcf8f3;
-  --bg-alt: #f3ece3;
+  /* veludo verde */
+  --green: #003912;
+  --green-light: #004d1a;
+  --green-soft: #e8f2ec;
+
+  /* dourado */
+  --gold: #DBAD00;
+  --gold-light: #f5e7a3;
+  --gold-dark: #b8920a;
+
+  /* superfícies */
+  --bg: #f7f5f0;
+  --bg-alt: #003912;
   --surface: #ffffff;
-  --text: #221d17;
-  --muted: #5f564c;
-  --accent: #7f2f19;
-  --accent-strong: #5f1f0d;
-  --border: #e4d6c7;
+  --text: #1a1a1a;
+  --text-light: #f7f5f0;
+  --muted: #4a4a4a;
+  --accent: #DBAD00;
+  --accent-strong: #b8920a;
+  --border: #d4cfc5;
 }
 
 * {
@@ -35,9 +47,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(252, 248, 243, 0.95);
+  background: rgba(0, 57, 18, 0.97);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--gold);
 }
 
 .nav {
@@ -51,8 +63,9 @@ body {
 .brand {
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text);
+  color: var(--gold);
   text-decoration: none;
+  letter-spacing: 0.04em;
 }
 
 nav {
@@ -62,17 +75,19 @@ nav {
 }
 
 nav a {
-  color: var(--muted);
+  color: var(--green-soft);
   text-decoration: none;
   font-weight: 500;
 }
 
 nav a:hover {
-  color: var(--text);
+  color: var(--gold);
 }
 
 .hero {
   padding: 5rem 0 4rem;
+  background: var(--green);
+  color: var(--text-light);
 }
 
 .hero-content {
@@ -84,9 +99,9 @@ nav a:hover {
   margin: 0 0 1rem;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
-  background: var(--bg-alt);
-  border: 1px solid var(--border);
-  color: var(--muted);
+  background: rgba(219, 173, 0, 0.15);
+  border: 1px solid var(--gold);
+  color: var(--gold);
   font-weight: 600;
   font-size: 0.875rem;
 }
@@ -95,10 +110,11 @@ h1 {
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1.1;
   margin: 0;
+  color: var(--gold);
 }
 
 .hero p {
-  color: var(--muted);
+  color: var(--green-soft);
   max-width: 64ch;
 }
 
@@ -119,22 +135,23 @@ h1 {
 }
 
 .btn-primary {
-  background: var(--accent);
-  color: #fff;
+  background: var(--gold);
+  color: var(--green);
+  font-weight: 700;
 }
 
 .btn-primary:hover {
-  background: var(--accent-strong);
+  background: var(--gold-dark);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--text);
-  border-color: var(--border);
+  color: var(--gold);
+  border-color: var(--gold);
 }
 
 .btn-secondary:hover {
-  background: var(--bg-alt);
+  background: rgba(219, 173, 0, 0.12);
 }
 
 .section {
@@ -143,14 +160,20 @@ h1 {
 
 .section-alt {
   background: var(--bg-alt);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  color: var(--text-light);
+  border-top: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
 }
 
 h2 {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  color: var(--green);
+}
+
+.section-alt h2 {
+  color: var(--gold);
 }
 
 .grid {
@@ -161,25 +184,32 @@ h2 {
 }
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(219, 173, 0, 0.3);
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 1.25rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 2px 12px rgba(219, 173, 0, 0.15);
 }
 
 .card h3 {
   margin-top: 0;
   margin-bottom: 0.45rem;
   font-size: 1.1rem;
+  color: var(--gold);
 }
 
 .card p {
   margin: 0;
-  color: var(--muted);
+  color: rgba(247, 245, 240, 0.75);
 }
 
 .text-link {
-  color: var(--accent);
+  color: var(--gold);
   font-weight: 600;
 }
 
@@ -193,17 +223,19 @@ h2 {
 }
 
 .contact-list a {
-  color: var(--accent);
+  color: var(--gold);
 }
 
 .site-footer {
   padding: 1.2rem 0 1.8rem;
+  background: var(--green);
+  color: var(--green-soft);
 }
 
 .footer-content {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(219, 173, 0, 0.35);
   padding-top: 1.2rem;
-  color: var(--muted);
+  color: var(--green-soft);
   font-size: 0.95rem;
 }
 
