@@ -51,18 +51,23 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
   const bld  = document.getElementById("parallaxBuilding");
   if (!hero || !sky || !bld) return;
 
-  const SKY_SPEED = 0.15;      // sky moves slowly
-  const BLD_SPEED = 0.45;      // building moves more
+  const SKY_SPEED  = 0.08;   // sky drifts very slowly
+  const BLD_SPEED  = 0.55;   // building rises faster (moves UP)
 
   function onScroll() {
-    const scrollY = window.scrollY;
-    const heroH = hero.offsetHeight;
-    // only animate while hero is in view
-    if (scrollY > heroH * 1.5) return;
+    const rect   = hero.getBoundingClientRect();
+    const heroH  = hero.offsetHeight;
+    // progress 0 → 1 as we scroll through the 300vh section
+    const scrolled = Math.min(Math.max(-rect.top, 0), heroH);
+    const progress = scrolled / heroH;
 
-    sky.style.transform = `translateY(${scrollY * SKY_SPEED}px)`;
-    // building starts at top of image and descends
-    bld.style.transform = `translateX(-50%) translateY(${-5 + scrollY * BLD_SPEED}px)`;
+    // sky: small downward drift
+    sky.style.transform = `translateY(${scrolled * SKY_SPEED}px)`;
+
+    // building: moves UP as user scrolls down
+    // starts at top:80% (mostly hidden), rises into view
+    const buildingShift = scrolled * BLD_SPEED;
+    bld.style.transform = `translateX(-50%) translateY(-${buildingShift}px)`;
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
