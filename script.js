@@ -51,15 +51,16 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
   const bld     = document.getElementById("parallaxBuilding");
   if (!wrapper || !sky || !bld) return;
 
-  const SKY_SPEED = 0.06;      // very subtle sky drift
-  const BLD_SPEED = 0.7;       // strong building descent
-  const BLD_START = -30;       // start % above viewport (top of image visible)
+  const SKY_SPEED = 0.06;       // very subtle sky drift
+  const BLD_SPEED = 1.1;        // strong building rise
+
+  // measure building image real height after load
+  const bldImg = bld.querySelector("img");
 
   function onScroll() {
     const wrapperRect = wrapper.getBoundingClientRect();
     const wrapperH    = wrapper.offsetHeight;
     const scrolled    = Math.max(-wrapperRect.top, 0);
-    const scrollEnd   = wrapperH - window.innerHeight;
 
     // hide fixed layers once we exit the parallax zone
     const inZone = wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0;
@@ -72,9 +73,10 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
     // sky — small upward drift
     sky.style.transform = `translateY(-${scrolled * SKY_SPEED}px)`;
 
-    // building — descends from above into view
-    const bldY = BLD_START + scrolled * BLD_SPEED;
-    bld.style.transform = `translateY(${bldY}px)`;
+    // building — starts at top:100vh (CSS), moves UP strongly
+    // so it rises into view as user scrolls
+    bld.style.transform = `translateY(-${scrolled * BLD_SPEED}px)`;
+  }
   }
 
   // Observe panels for fade-in
