@@ -43,32 +43,53 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 });
 
 // =====================================================
-// PARALLAX — sky (slow) + building (faster, descends)
+// PARALLAX — full-page: sky fixed, building descends right
 // =====================================================
 (function initParallax() {
-  const hero = document.getElementById("parallaxHero");
-  const sky  = document.getElementById("parallaxSky");
-  const bld  = document.getElementById("parallaxBuilding");
-  if (!hero || !sky || !bld) return;
+  const wrapper = document.getElementById("parallaxWrapper");
+  const sky     = document.getElementById("parallaxSky");
+  const bld     = document.getElementById("parallaxBuilding");
+  if (!wrapper || !sky || !bld) return;
 
-  const SKY_SPEED  = 0.08;   // sky drifts very slowly
-  const BLD_SPEED  = 0.55;   // building rises faster (moves UP)
+  const SKY_SPEED = 0.06;      // very subtle sky drift
+  const BLD_SPEED = 0.7;       // strong building descent
+  const BLD_START = -30;       // start % above viewport (top of image visible)
 
   function onScroll() {
-    const rect   = hero.getBoundingClientRect();
-    const heroH  = hero.offsetHeight;
-    // progress 0 → 1 as we scroll through the 300vh section
-    const scrolled = Math.min(Math.max(-rect.top, 0), heroH);
-    const progress = scrolled / heroH;
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const wrapperH    = wrapper.offsetHeight;
+    const scrolled    = Math.max(-wrapperRect.top, 0);
+    const scrollEnd   = wrapperH - window.innerHeight;
 
-    // sky: small downward drift
-    sky.style.transform = `translateY(${scrolled * SKY_SPEED}px)`;
+    // hide fixed layers once we exit the parallax zone
+    const inZone = wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0;
+    sky.classList.toggle("hidden", !inZone);
+    bld.classList.toggle("hidden", !inZone);
+    document.querySelector(".parallax-overlay").classList.toggle("hidden", !inZone);
 
-    // building: moves UP as user scrolls down
-    // starts at top:80% (mostly hidden), rises into view
-    const buildingShift = scrolled * BLD_SPEED;
-    bld.style.transform = `translateX(-50%) translateY(-${buildingShift}px)`;
+    if (!inZone) return;
+
+    // sky — small upward drift
+    sky.style.transform = `translateY(-${scrolled * SKY_SPEED}px)`;
+
+    // building — descends from above into view
+    const bldY = BLD_START + scrolled * BLD_SPEED;
+    bld.style.transform = `translateY(${bldY}px)`;
   }
+
+  // Observe panels for fade-in
+  const panelObs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+          panelObs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+  document.querySelectorAll(".px-panel").forEach((p) => panelObs.observe(p));
 
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
