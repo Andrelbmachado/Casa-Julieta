@@ -53,9 +53,7 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 
   const SKY_SPEED = 0.06;       // very subtle sky drift
   const BLD_SPEED = 1.1;        // strong building rise
-
-  // measure building image real height after load
-  const bldImg = bld.querySelector("img");
+  const overlay   = document.querySelector(".parallax-overlay");
 
   function onScroll() {
     const wrapperRect = wrapper.getBoundingClientRect();
@@ -66,7 +64,7 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
     const inZone = wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0;
     sky.classList.toggle("hidden", !inZone);
     bld.classList.toggle("hidden", !inZone);
-    document.querySelector(".parallax-overlay").classList.toggle("hidden", !inZone);
+    if (overlay) overlay.classList.toggle("hidden", !inZone);
 
     if (!inZone) return;
 
@@ -74,9 +72,7 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
     sky.style.transform = `translateY(-${scrolled * SKY_SPEED}px)`;
 
     // building — starts at top:100vh (CSS), moves UP strongly
-    // so it rises into view as user scrolls
     bld.style.transform = `translateY(-${scrolled * BLD_SPEED}px)`;
-  }
   }
 
   // Observe panels for fade-in
