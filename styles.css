@@ -1,24 +1,23 @@
 :root {
   /* veludo verde */
   --green: #003912;
+  --green-deep: #00260c;
   --green-light: #004d1a;
-  --green-soft: #e8f2ec;
+  --green-soft: #d6e8dc;
 
   /* dourado */
   --gold: #DBAD00;
   --gold-light: #f5e7a3;
   --gold-dark: #b8920a;
 
-  /* superfícies */
-  --bg: #f7f5f0;
-  --bg-alt: #003912;
-  --surface: #ffffff;
-  --text: #1a1a1a;
-  --text-light: #f7f5f0;
-  --muted: #4a4a4a;
+  /* superfícies — tudo baseado no verde veludo */
+  --bg: #003912;
+  --bg-alt: #00260c;
+  --text: #e8f2ec;
+  --muted: #b0c8b8;
   --accent: #DBAD00;
   --accent-strong: #b8920a;
-  --border: #d4cfc5;
+  --border: rgba(219, 173, 0, 0.25);
 }
 
 * {
@@ -36,6 +35,11 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
+  /* textura sutil de veludo */
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(0,77,26,0.4) 0%, transparent 70%),
+    radial-gradient(ellipse at 80% 50%, rgba(0,38,12,0.5) 0%, transparent 70%);
+  background-attachment: fixed;
 }
 
 .container {
@@ -86,8 +90,6 @@ nav a:hover {
 
 .hero {
   padding: 5rem 0 4rem;
-  background: var(--green);
-  color: var(--text-light);
 }
 
 .hero-content {
@@ -114,7 +116,7 @@ h1 {
 }
 
 .hero p {
-  color: var(--green-soft);
+  color: var(--muted);
   max-width: 64ch;
 }
 
@@ -160,19 +162,14 @@ h1 {
 
 .section-alt {
   background: var(--bg-alt);
-  color: var(--text-light);
-  border-top: 2px solid var(--gold);
-  border-bottom: 2px solid var(--gold);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 h2 {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-  color: var(--green);
-}
-
-.section-alt h2 {
   color: var(--gold);
 }
 
@@ -205,7 +202,7 @@ h2 {
 
 .card p {
   margin: 0;
-  color: rgba(247, 245, 240, 0.75);
+  color: var(--muted);
 }
 
 .text-link {
@@ -220,6 +217,7 @@ h2 {
 
 .contact-list li {
   margin-bottom: 0.6rem;
+  color: var(--muted);
 }
 
 .contact-list a {
@@ -228,14 +226,12 @@ h2 {
 
 .site-footer {
   padding: 1.2rem 0 1.8rem;
-  background: var(--green);
-  color: var(--green-soft);
 }
 
 .footer-content {
-  border-top: 1px solid rgba(219, 173, 0, 0.35);
+  border-top: 1px solid var(--border);
   padding-top: 1.2rem;
-  color: var(--green-soft);
+  color: var(--muted);
   font-size: 0.95rem;
 }
 
