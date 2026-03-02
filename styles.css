@@ -216,9 +216,64 @@ h1, h2, h3 {
   border-color: var(--gold);
 }
 
-/* ---- Hero ---- */
-.hero {
+/* ---- Parallax Hero ---- */
+.parallax-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
   padding: 6rem 0 4rem;
+  overflow: hidden;
+}
+
+.parallax-sky {
+  position: absolute;
+  inset: -60px 0 0 0;   /* extra height for scroll travel */
+  z-index: 0;
+  will-change: transform;
+}
+.parallax-sky img {
+  width: 100%;
+  height: 130%;           /* oversized so it can move */
+  object-fit: cover;
+  object-position: center top;
+}
+
+.parallax-building {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(-5%);
+  z-index: 1;
+  width: clamp(260px, 38vw, 560px);
+  will-change: transform;
+  pointer-events: none;
+}
+.parallax-building img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 40px rgba(0,0,0,0.45));
+}
+
+/* subtle dark gradient overlay so text stays readable */
+.parallax-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(0, 38, 12, 0.92) 0%,
+    rgba(0, 38, 12, 0.55) 40%,
+    rgba(0, 38, 12, 0.15) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.parallax-hero .hero-content {
+  position: relative;
+  z-index: 3;
 }
 
 .hero-content { max-width: 680px; }

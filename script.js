@@ -43,6 +43,33 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 });
 
 // =====================================================
+// PARALLAX — sky (slow) + building (faster, descends)
+// =====================================================
+(function initParallax() {
+  const hero = document.getElementById("parallaxHero");
+  const sky  = document.getElementById("parallaxSky");
+  const bld  = document.getElementById("parallaxBuilding");
+  if (!hero || !sky || !bld) return;
+
+  const SKY_SPEED = 0.15;      // sky moves slowly
+  const BLD_SPEED = 0.45;      // building moves more
+
+  function onScroll() {
+    const scrollY = window.scrollY;
+    const heroH = hero.offsetHeight;
+    // only animate while hero is in view
+    if (scrollY > heroH * 1.5) return;
+
+    sky.style.transform = `translateY(${scrollY * SKY_SPEED}px)`;
+    // building starts at top of image and descends
+    bld.style.transform = `translateX(-50%) translateY(${-5 + scrollY * BLD_SPEED}px)`;
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+})();
+
+// =====================================================
 // VELVET CANVAS — micro fibres that react to the mouse
 // =====================================================
 (function initVelvet() {
