@@ -126,7 +126,7 @@ h1, h2, h3 {
 /* Brand with gold shimmer effect */
 .brand {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 2.7rem;
+  font-size: 2.16rem;
   font-weight: 700;
   text-decoration: none;
   letter-spacing: 0.06em;
@@ -311,6 +311,12 @@ h1, h2, h3 {
   width: 28px;
   height: 28px;
   animation: bounceDown 2s ease-in-out infinite;
+  transition: transform 0.3s ease;
+}
+
+.hero-cta:hover .hero-chevron {
+  animation: none;
+  transform: translateY(6px);
 }
 
 @keyframes bounceDown {
