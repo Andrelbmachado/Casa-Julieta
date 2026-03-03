@@ -43,30 +43,32 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 });
 
 // =====================================================
-// VELVET CANVAS — micro fibres that react to the mouse
+// CUBE GRID — squares that jump when hovered
 // =====================================================
-(function initVelvet() {
+(function initCubeGrid() {
   const canvas = document.getElementById("velvet-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
   let W, H;
-  const FIBRE_SPACING = 14;      // px between fibres (larger)
-  const FIBRE_LEN = 10;           // base length (taller fibres)
-  const INFLUENCE = 160;          // px radius of mouse influence
-  const RETURN_SPEED = 0.08;     // how fast fibres spring back
+  const SIZE = 28;             // cube face size
+  const GAP = 4;               // gap between cubes
+  const STEP = SIZE + GAP;
+  const INFLUENCE = 200;       // px radius of mouse influence
+  const MAX_JUMP = 22;         // max jump height in px
+  const SPRING = 0.1;          // how fast cubes return
   let mouse = { x: -9999, y: -9999 };
 
-  let cols, rows, fibres; // { angle, targetAngle }
+  let cols, rows, cubes; // { y: current jump offset, target }
 
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    cols = Math.ceil(W / FIBRE_SPACING);
-    rows = Math.ceil(H / FIBRE_SPACING);
-    fibres = new Array(cols * rows);
-    for (let i = 0; i < fibres.length; i++) {
-      fibres[i] = { angle: -Math.PI / 2, target: -Math.PI / 2 };
+    cols = Math.ceil(W / STEP) + 1;
+    rows = Math.ceil(H / STEP) + 1;
+    cubes = new Array(cols * rows);
+    for (let i = 0; i < cubes.length; i++) {
+      cubes[i] = { jump: 0, target: 0 };
     }
   }
 
@@ -78,44 +80,90 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
     mouse.y = e.clientY;
   });
 
+  // Colors
+  const FACE_COLOR   = "rgba(0,48,16,0.6)";
+  const TOP_COLOR    = "rgba(0,70,24,0.7)";
+  const SHADOW_COLOR = "rgba(0,0,0,0.35)";
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const idx = r * cols + c;
-        const x = c * FIBRE_SPACING;
-        const y = r * FIBRE_SPACING;
+        const bx = c * STEP;
+        const by = r * STEP;
 
-        const dx = mouse.x - x;
-        const dy = mouse.y - y;
+        const dx = mouse.x - (bx + SIZE / 2);
+        const dy = mouse.y - (by + SIZE / 2);
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        const f = fibres[idx];
+        const cube = cubes[idx];
 
         if (dist < INFLUENCE) {
           const strength = 1 - dist / INFLUENCE;
-          f.target = Math.atan2(dy, dx) + Math.PI; // bend away
+          cube.target = MAX_JUMP * strength * strength; // quadratic falloff
         } else {
-          f.target = -Math.PI / 2; // upright
+          cube.target = 0;
         }
 
-        f.angle += (f.target - f.angle) * RETURN_SPEED;
+        cube.jump += (cube.target - cube.jump) * SPRING;
 
-        const ex = x + Math.cos(f.angle) * FIBRE_LEN;
-        const ey = y + Math.sin(f.angle) * FIBRE_LEN;
+        const jump = cube.jump;
+        const y = by - jump;
 
-        // slight brightness variation near mouse
-        const brightness = dist < INFLUENCE
-          ? 45 + Math.round(35 * (1 - dist / INFLUENCE))
-          : 45;
+        // Shadow (stays at base, grows with jump)
+        if (jump > 0.5) {
+          const shadowAlpha = Math.min(jump / MAX_JUMP * 0.45, 0.45);
+          const shadowSpread = jump * 0.3;
+          ctx.fillStyle = `rgba(0,0,0,${shadowAlpha})`;
+          ctx.beginPath();
+          ctx.ellipse(
+            bx + SIZE / 2,
+            by + SIZE + 2,
+            SIZE / 2 + shadowSpread,
+            3 + shadowSpread * 0.5,
+            0, 0, Math.PI * 2
+          );
+          ctx.fill();
+        }
 
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(ex, ey);
-        ctx.strokeStyle = `rgba(0,${brightness},12,0.5)`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+        // Brightness boost near mouse
+        const bright = dist < INFLUENCE
+          ? Math.round(20 * (1 - dist / INFLUENCE))
+          : 0;
+
+        // Front face
+        ctx.fillStyle = `rgba(0,${48 + bright},${16 + bright},0.6)`;
+        ctx.fillRect(bx, y, SIZE, SIZE);
+
+        // Top face (lighter)
+        if (jump > 0.5) {
+          const topH = Math.min(jump * 0.4, 8);
+          ctx.fillStyle = `rgba(0,${70 + bright},${24 + bright},0.7)`;
+          ctx.beginPath();
+          ctx.moveTo(bx, y);
+          ctx.lineTo(bx + 4, y - topH);
+          ctx.lineTo(bx + SIZE + 4, y - topH);
+          ctx.lineTo(bx + SIZE, y);
+          ctx.closePath();
+          ctx.fill();
+
+          // Right face (darker)
+          ctx.fillStyle = `rgba(0,${30 + bright},${10 + bright},0.5)`;
+          ctx.beginPath();
+          ctx.moveTo(bx + SIZE, y);
+          ctx.lineTo(bx + SIZE + 4, y - topH);
+          ctx.lineTo(bx + SIZE + 4, y + SIZE - topH);
+          ctx.lineTo(bx + SIZE, y + SIZE);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Subtle border
+        ctx.strokeStyle = `rgba(0,${60 + bright},20,0.25)`;
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(bx, y, SIZE, SIZE);
       }
     }
 
