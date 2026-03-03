@@ -547,29 +547,32 @@ h2 {
 .map-wrapper iframe { display: block; width: 100%; }
 
 /* ---- Contact ---- */
-.contact-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
+.contact-title {
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  color: var(--gold);
+  margin: 0 0 2rem;
 }
-.contact-list li {
-  margin-bottom: 0.75rem;
-  color: var(--muted);
+
+.contact-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
 }
-.contact-list li strong {
-  display: block;
-  color: var(--text);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.1rem;
-}
-.contact-list a {
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--gold);
   text-decoration: none;
+  font-size: 0.85rem;
   transition: opacity 0.2s;
 }
-.contact-list a:hover { opacity: 0.75; }
+.contact-item:hover { opacity: 0.7; }
+.contact-item svg { flex-shrink: 0; }
+.contact-item span { color: var(--muted); }
 
 /* ---- Footer ---- */
 .site-footer {
@@ -581,10 +584,10 @@ h2 {
 
 .footer-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  text-align: center;
+  gap: 0.3rem;
   border-top: 1px solid var(--border);
   padding-top: 1.2rem;
   color: var(--muted);
