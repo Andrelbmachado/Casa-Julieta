@@ -10,51 +10,42 @@ window.addEventListener('beforeunload', () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 });
 
-// ---- Intro animation (GSAP) — animates real site elements ----
+// ---- Intro animation (GSAP) — hi-res title ----
 (function () {
   if (typeof gsap === 'undefined') return;
 
+  var hires    = document.getElementById('introHires');
   var brand    = document.querySelector('.brand');
   var navLine  = document.getElementById('navLine');
   var mainNav  = document.querySelector('.main-nav');
   var navLinks = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
   var heroCta  = document.querySelector('.hero-cta');
 
-  if (!brand || !navLine || !mainNav) return;
+  if (!hires || !brand || !navLine || !mainNav) return;
 
   document.body.style.overflow = 'hidden';
 
   function run() {
-    /* ---- measure brand's natural (final) position ---- */
+    /* ---- measure targets ---- */
     var brandRect = brand.getBoundingClientRect();
     var brandCx   = brandRect.left + brandRect.width / 2;
     var brandCy   = brandRect.top  + brandRect.height / 2;
-    var screenCx  = window.innerWidth / 2;
-    var screenCy  = window.innerHeight / 2;
 
-    /* translate needed to move brand from its DOM position to screen center */
-    var dx = screenCx - brandCx;
-    var dy = screenCy - brandCy;
-
-    var heroScale = 4.5;
+    var hiresRect  = hires.getBoundingClientRect();
+    var hiresW     = hiresRect.width;   // native rendered width at scale 1
+    var brandW     = brandRect.width;
+    var endScale   = brandW / hiresW;   // exact ratio to match brand size
 
     var navLineRect = navLine.getBoundingClientRect();
     var navCenterX  = navLineRect.left + navLineRect.width / 2;
-
     var offsets = navLinks.map(function (link) {
       var r = link.getBoundingClientRect();
       return navCenterX - (r.left + r.width / 2);
     });
 
-    /* ---- initial states (brand stays in DOM flow!) ---- */
-    gsap.set(brand, {
-      x: dx,
-      y: dy,
-      scale: heroScale,
-      zIndex: 10000,
-      opacity: 0
-    });
-
+    /* ---- initial states ---- */
+    gsap.set(brand, { visibility: 'hidden' });
+    gsap.set(hires, { opacity: 0, scale: 0.3 });
     gsap.set(navLine, { scaleX: 0 });
     navLinks.forEach(function (link, i) {
       gsap.set(link, { x: offsets[i], opacity: 0 });
@@ -68,32 +59,30 @@ window.addEventListener('beforeunload', () => {
       }
     });
 
-    /* 0–0.3s: fade in brand at center of screen */
-    tl.to(brand, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
+    /* 0–0.3s: fade in hi-res title at center */
+    tl.to(hires, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
 
-    /* 0–2s: brand pulses from small→large at center */
-    tl.fromTo(brand,
-      { scale: 0.5, x: dx, y: dy },
-      { scale: heroScale, x: dx, y: dy, duration: 2, ease: 'power2.out' },
-      0
-    );
+    /* 0–2s: title grows from small to full size */
+    tl.to(hires, { scale: 1, duration: 2, ease: 'power2.out' }, 0);
 
-    /* 2–3s: brand moves back to header position & shrinks to scale 1 */
-    tl.to(brand, {
-      x: 0,
-      y: 0,
-      scale: 1,
+    /* 2–3s: title shrinks & flies to brand position */
+    tl.to(hires, {
+      left: brandCx,
+      top: brandCy,
+      scale: endScale,
       duration: 1,
       ease: 'power3.inOut',
       onComplete: function () {
-        gsap.set(brand, { clearProps: 'x,y,scale,zIndex,opacity' });
+        /* swap: show real brand, remove hi-res */
+        gsap.set(brand, { visibility: 'visible' });
+        hires.remove();
       }
     }, 2);
 
-    /* 2–3s: gold line grows from center (already at final height) */
+    /* 2–3s: gold line grows from center */
     tl.to(navLine, { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 2);
 
-    /* 2–3s: nav links spread from center (already at final height) */
+    /* 2–3s: nav links spread from center */
     tl.to(navLinks, { x: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.05 }, 2);
 
     /* 3–3.5s: hero CTA fades in */
