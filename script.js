@@ -10,7 +10,7 @@ window.addEventListener('beforeunload', () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 });
 
-// ---- Intro animation (GSAP) — animates real site elements ----
+// ---- Intro animation (GSAP) — hi-res with crossfade ----
 (function () {
   if (typeof gsap === 'undefined') return;
 
@@ -25,15 +25,36 @@ window.addEventListener('beforeunload', () => {
   document.body.style.overflow = 'hidden';
 
   function run() {
+    /* ---- measure brand's final position ---- */
     var brandRect = brand.getBoundingClientRect();
     var brandCx   = brandRect.left + brandRect.width / 2;
     var brandCy   = brandRect.top  + brandRect.height / 2;
+    var brandW    = brandRect.width;
     var screenCx  = window.innerWidth / 2;
     var screenCy  = window.innerHeight / 2;
-    var dx = screenCx - brandCx;
-    var dy = screenCy - brandCy;
-    var heroScale = 4.5;
 
+    /* ---- create hi-res clone (large native font-size) ---- */
+    var hires = document.createElement('span');
+    hires.textContent = 'Casa Julieta';
+    hires.style.cssText =
+      'position:fixed;z-index:10001;top:50%;left:50%;' +
+      'transform:translate(-50%,-50%) scale(0.3);' +
+      'font-family:"Cormorant Garamond",Georgia,serif;' +
+      'font-size:clamp(5rem,14vw,12rem);font-weight:700;' +
+      'line-height:1.2;letter-spacing:0.06em;white-space:nowrap;' +
+      'background:linear-gradient(105deg,#b8920a 0%,#DBAD00 25%,#fff5c0 40%,#DBAD00 55%,#b8920a 80%,#DBAD00 100%);' +
+      'background-size:250% 100%;' +
+      '-webkit-background-clip:text;background-clip:text;' +
+      '-webkit-text-fill-color:transparent;' +
+      'animation:goldShimmer 4s ease-in-out infinite;' +
+      'opacity:0;pointer-events:none;';
+    document.body.appendChild(hires);
+
+    /* measure hi-res to compute final scale ratio */
+    var hiresRect = hires.getBoundingClientRect();
+    var endScale  = brandW / hiresRect.width;
+
+    /* ---- nav offsets ---- */
     var navLineRect = navLine.getBoundingClientRect();
     var navCenterX  = navLineRect.left + navLineRect.width / 2;
     var offsets = navLinks.map(function (link) {
@@ -42,12 +63,7 @@ window.addEventListener('beforeunload', () => {
     });
 
     /* ---- initial states ---- */
-    gsap.set(brand, {
-      x: dx, y: dy,
-      scale: heroScale,
-      zIndex: 10000,
-      opacity: 0
-    });
+    gsap.set(brand, { opacity: 0 });
     gsap.set(navLine, { scaleX: 0 });
     navLinks.forEach(function (link, i) {
       gsap.set(link, { x: offsets[i], opacity: 0 });
@@ -61,26 +77,41 @@ window.addEventListener('beforeunload', () => {
       }
     });
 
-    tl.to(brand, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
+    /* 0–0.3s: fade in hi-res at center */
+    tl.to(hires, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
 
-    tl.fromTo(brand,
-      { scale: 0.5, x: dx, y: dy },
-      { scale: heroScale, x: dx, y: dy, duration: 2, ease: 'power2.out' },
+    /* 0–2s: hi-res grows from small to full size */
+    tl.fromTo(hires,
+      { scale: 0.3, css: { transform: 'translate(-50%,-50%) scale(0.3)' } },
+      { css: { transform: 'translate(-50%,-50%) scale(1)' }, duration: 2, ease: 'power2.out' },
       0
     );
 
-    tl.to(brand, {
-      x: 0, y: 0, scale: 1,
+    /* 2–3s: hi-res shrinks & flies to brand position */
+    tl.to(hires, {
+      css: {
+        top: brandCy + 'px',
+        left: brandCx + 'px',
+        transform: 'translate(-50%,-50%) scale(' + endScale + ')'
+      },
       duration: 1,
-      ease: 'power3.inOut',
-      onComplete: function () {
-        gsap.set(brand, { clearProps: 'x,y,scale,zIndex,opacity' });
-      }
+      ease: 'power3.inOut'
     }, 2);
 
+    /* 3–3.3s: crossfade — hi-res out, brand in */
+    tl.to(hires, { opacity: 0, duration: 0.3, ease: 'none',
+      onComplete: function () { hires.remove(); }
+    }, 3);
+    tl.to(brand, { opacity: 1, duration: 0.3, ease: 'none' }, 3);
+
+    /* 2–3s: gold line grows from center */
     tl.to(navLine, { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 2);
+
+    /* 2–3s: nav links spread from center */
     tl.to(navLinks, { x: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.05 }, 2);
-    if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3);
+
+    /* 3.2–3.7s: hero CTA fades in */
+    if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3.2);
   }
 
   /* wait for fonts so measurements are accurate */
