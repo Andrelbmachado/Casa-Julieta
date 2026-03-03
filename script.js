@@ -51,9 +51,9 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
   const ctx = canvas.getContext("2d");
 
   let W, H;
-  const FIBRE_SPACING = 10;      // px between fibres
-  const FIBRE_LEN = 5;           // base length (short — velvet)
-  const INFLUENCE = 120;          // px radius of mouse influence
+  const FIBRE_SPACING = 14;      // px between fibres (larger)
+  const FIBRE_LEN = 10;           // base length (taller fibres)
+  const INFLUENCE = 160;          // px radius of mouse influence
   const RETURN_SPEED = 0.08;     // how fast fibres spring back
   let mouse = { x: -9999, y: -9999 };
 
@@ -107,14 +107,14 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 
         // slight brightness variation near mouse
         const brightness = dist < INFLUENCE
-          ? 30 + Math.round(18 * (1 - dist / INFLUENCE))
-          : 30;
+          ? 45 + Math.round(35 * (1 - dist / INFLUENCE))
+          : 45;
 
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(ex, ey);
-        ctx.strokeStyle = `rgba(0,${brightness},10,0.25)`;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = `rgba(0,${brightness},12,0.5)`;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       }
     }
@@ -149,3 +149,26 @@ document.querySelectorAll(".btn").forEach((btn) => {
     glow.style.opacity = "0";
   });
 });
+
+// =====================================================
+// HERO TITLE GLOW — light follows the cursor over text
+// =====================================================
+(function initHeroGlow() {
+  const title = document.getElementById("heroTitle");
+  if (!title) return;
+
+  const glow = document.createElement("span");
+  glow.className = "hero-title-glow";
+  title.appendChild(glow);
+
+  title.addEventListener("mousemove", (e) => {
+    const rect = title.getBoundingClientRect();
+    glow.style.left = (e.clientX - rect.left) + "px";
+    glow.style.top = (e.clientY - rect.top) + "px";
+    glow.style.opacity = "1";
+  });
+
+  title.addEventListener("mouseleave", () => {
+    glow.style.opacity = "0";
+  });
+})();
