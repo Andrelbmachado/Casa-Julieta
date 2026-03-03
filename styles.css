@@ -233,6 +233,7 @@ h1, h2, h3 {
   justify-content: center;
   text-align: center;
   padding: 2rem;
+  padding-bottom: 8rem;
 }
 
 .hero-title {
@@ -241,37 +242,23 @@ h1, h2, h3 {
   font-weight: 700;
   line-height: 1.05;
   margin: 0 0 2.5rem;
-  background: linear-gradient(
-    105deg,
-    var(--gold-dark) 0%,
-    var(--gold) 25%,
-    #fff5c0 40%,
-    var(--gold) 55%,
-    var(--gold-dark) 80%,
-    var(--gold) 100%
-  );
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: goldShimmer 4s ease-in-out infinite;
+  color: var(--gold);
+  -webkit-text-fill-color: var(--gold);
+  text-shadow: 0 4px 30px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
   position: relative;
   cursor: default;
+  transition: filter 0.4s ease;
 }
 
-/* Interactive hover glow on hero title */
-.hero-title-glow {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(219,173,0,0.45) 0%, rgba(255,245,192,0.2) 30%, transparent 70%);
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.15s;
-  mix-blend-mode: screen;
-  z-index: 1;
+/* White shimmer only on hover */
+.hero-title:hover {
+  animation: whiteShine 1.2s ease forwards;
+}
+
+@keyframes whiteShine {
+  0%   { filter: brightness(1); -webkit-text-fill-color: var(--gold); }
+  50%  { filter: brightness(1.8); -webkit-text-fill-color: #fff5d6; }
+  100% { filter: brightness(1); -webkit-text-fill-color: var(--gold); }
 }
 
 .hero-cta {
@@ -568,11 +555,15 @@ h2 {
   color: var(--gold);
   text-decoration: none;
   font-size: 0.85rem;
-  transition: opacity 0.2s;
+  transition: filter 0.3s, text-shadow 0.3s;
 }
-.contact-item:hover { opacity: 0.7; }
+.contact-item:hover {
+  filter: brightness(1.5);
+  text-shadow: 0 0 12px rgba(219,173,0,0.5);
+}
 .contact-item svg { flex-shrink: 0; }
-.contact-item span { color: var(--muted); }
+.contact-item span { color: var(--muted); transition: color 0.3s; }
+.contact-item:hover span { color: var(--gold-light); }
 
 /* ---- Footer ---- */
 .site-footer {
@@ -584,15 +575,16 @@ h2 {
 
 .footer-content {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 0.3rem;
+  justify-content: space-between;
+  gap: 0.5rem;
   border-top: 1px solid var(--border);
   padding-top: 1.2rem;
   color: var(--muted);
   font-size: 0.85rem;
 }
+.footer-content p:first-child { text-align: left; }
+.footer-content p:last-child { text-align: right; }
 .footer-content p { margin: 0; }
 .footer-content a {
   color: var(--gold);

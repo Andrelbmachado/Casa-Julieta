@@ -149,26 +149,3 @@ document.querySelectorAll(".btn").forEach((btn) => {
     glow.style.opacity = "0";
   });
 });
-
-// =====================================================
-// HERO TITLE GLOW — light follows the cursor over text
-// =====================================================
-(function initHeroGlow() {
-  const title = document.getElementById("heroTitle");
-  if (!title) return;
-
-  const glow = document.createElement("span");
-  glow.className = "hero-title-glow";
-  title.appendChild(glow);
-
-  title.addEventListener("mousemove", (e) => {
-    const rect = title.getBoundingClientRect();
-    glow.style.left = (e.clientX - rect.left) + "px";
-    glow.style.top = (e.clientY - rect.top) + "px";
-    glow.style.opacity = "1";
-  });
-
-  title.addEventListener("mouseleave", () => {
-    glow.style.opacity = "0";
-  });
-})();
