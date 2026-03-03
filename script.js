@@ -101,10 +101,10 @@ window.addEventListener('beforeunload', () => {
       duration: 1,
       ease: 'power3.inOut',
       onComplete: function () {
-        // Restore original font-size and clear transforms
+        // Keep large font-size + shrinkScale for crisp rendering
+        // Only clear positioning props
         gsap.set(brand, {
-          fontSize: originalFontSize,
-          clearProps: 'x,y,scale,zIndex,opacity,transformOrigin'
+          clearProps: 'x,y,zIndex,opacity,transformOrigin'
         });
       }
     }, 2);
