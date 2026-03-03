@@ -366,7 +366,7 @@ h1 {
 .btn-gold {
   background: var(--gold);
   color: var(--green);
-  cursor: none;
+  cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
 }
 .btn-gold:hover {
