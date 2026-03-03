@@ -25,30 +25,14 @@ window.addEventListener('beforeunload', () => {
   document.body.style.overflow = 'hidden';
 
   function run() {
-    /* ---- measure brand at its natural (small) size ---- */
-    var brandRect   = brand.getBoundingClientRect();
-    var brandW      = brandRect.width;
-    var brandH      = brandRect.height;
-    var brandCx     = brandRect.left + brandW / 2;
-    var brandCy     = brandRect.top  + brandH / 2;
-    var screenCx    = window.innerWidth / 2;
-    var screenCy    = window.innerHeight / 2;
-    var dx          = screenCx - brandCx;
-    var dy          = screenCy - brandCy;
-
-    /* Target visual scale (how big "Casa Julieta" should look at peak) */
+    var brandRect = brand.getBoundingClientRect();
+    var brandCx   = brandRect.left + brandRect.width / 2;
+    var brandCy   = brandRect.top  + brandRect.height / 2;
+    var screenCx  = window.innerWidth / 2;
+    var screenCy  = window.innerHeight / 2;
+    var dx = screenCx - brandCx;
+    var dy = screenCy - brandCy;
     var heroScale = 4.5;
-
-    /*
-     * Safari fix: render font at the LARGE size so it's crisp,
-     * then use scale < 1 to shrink it visually.
-     *
-     * We set font-size *= heroScale.  At that font-size, scale=1 = full big.
-     * The "small brand" final state = scale(1/heroScale).
-     */
-    var originalFontSize = parseFloat(getComputedStyle(brand).fontSize);
-    var bigFontSize      = originalFontSize * heroScale;
-    var shrinkScale      = 1 / heroScale;  // scale to look like original size
 
     var navLineRect = navLine.getBoundingClientRect();
     var navCenterX  = navLineRect.left + navLineRect.width / 2;
@@ -58,17 +42,12 @@ window.addEventListener('beforeunload', () => {
     });
 
     /* ---- initial states ---- */
-    // Set large font-size, compensate with scale so it LOOKS the same
     gsap.set(brand, {
-      fontSize: bigFontSize,
-      scale: shrinkScale,            // visually same as original
-      x: dx * (1 / shrinkScale),     // adjust translate for the scaled coords
-      y: dy * (1 / shrinkScale),
+      x: dx, y: dy,
+      scale: heroScale,
       zIndex: 10000,
-      opacity: 0,
-      transformOrigin: 'center center'
+      opacity: 0
     });
-
     gsap.set(navLine, { scaleX: 0 });
     navLinks.forEach(function (link, i) {
       gsap.set(link, { x: offsets[i], opacity: 0 });
@@ -82,46 +61,25 @@ window.addEventListener('beforeunload', () => {
       }
     });
 
-    /* 0–0.3s: fade in brand at center of screen */
     tl.to(brand, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
 
-    /* 0–2s: brand grows from small→full big at center (scale goes 0.5→1 in big-font space) */
-    var startScale = 0.5 * shrinkScale;  // start even smaller
     tl.fromTo(brand,
-      { scale: startScale },
-      { scale: 1, duration: 2, ease: 'power2.out' },
+      { scale: 0.5, x: dx, y: dy },
+      { scale: heroScale, x: dx, y: dy, duration: 2, ease: 'power2.out' },
       0
     );
 
-    /* 2–3s: brand shrinks to header size & moves back to position */
     tl.to(brand, {
-      x: 0,
-      y: 0,
-      scale: shrinkScale,
+      x: 0, y: 0, scale: 1,
       duration: 1,
       ease: 'power3.inOut',
       onComplete: function () {
-        // Clear positioning props, keep hi-res during settle
-        gsap.set(brand, {
-          clearProps: 'x,y,zIndex,opacity,transformOrigin'
-        });
-        // 2s later, swap to original small font-size
-        setTimeout(function () {
-          gsap.set(brand, {
-            fontSize: originalFontSize,
-            scale: 1
-          });
-        }, 2000);
+        gsap.set(brand, { clearProps: 'x,y,scale,zIndex,opacity' });
       }
     }, 2);
 
-    /* 2–3s: gold line grows from center */
     tl.to(navLine, { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 2);
-
-    /* 2–3s: nav links spread from center */
     tl.to(navLinks, { x: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.05 }, 2);
-
-    /* 3–3.5s: hero CTA fades in */
     if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3);
   }
 
