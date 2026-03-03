@@ -38,7 +38,7 @@ window.addEventListener('beforeunload', () => {
     hires.textContent = 'Casa Julieta';
     hires.style.cssText =
       'position:fixed;z-index:10001;top:50%;left:50%;' +
-      'transform:translate(-50%,-50%) scale(0.3);' +
+      'transform:translate(-50%,-50%);' +
       'font-family:"Cormorant Garamond",Georgia,serif;' +
       'font-size:clamp(5rem,14vw,12rem);font-weight:700;' +
       'line-height:1.2;letter-spacing:0.06em;white-space:nowrap;' +
@@ -50,7 +50,7 @@ window.addEventListener('beforeunload', () => {
       'opacity:0;pointer-events:none;';
     document.body.appendChild(hires);
 
-    /* measure hi-res to compute final scale ratio */
+    /* measure hi-res at scale=1 to compute exact final scale ratio */
     var hiresRect = hires.getBoundingClientRect();
     var endScale  = brandW / hiresRect.width;
 
