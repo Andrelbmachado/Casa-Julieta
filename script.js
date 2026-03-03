@@ -3,13 +3,12 @@
 // ---- Always start at top on reload ----
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+window.addEventListener('load', () => {
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+});
 window.addEventListener('beforeunload', () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 });
-// Strip hash so browser doesn't jump to an anchor on reload
-if (window.location.hash && !document.referrer) {
-  history.replaceState(null, '', window.location.pathname + window.location.search);
-}
 
 // ---- Year ----
 const yearEl = document.getElementById("year");
