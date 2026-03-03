@@ -612,8 +612,10 @@ h2 {
   color: var(--muted);
   font-size: 0.85rem;
 }
-.footer-content p:first-child { text-align: left; }
-.footer-content p:last-child { text-align: right; }
+.footer-content p { margin: 0; }
+.footer-spacer { flex: 1; }
+.footer-center { flex: 1; text-align: center; }
+.footer-right { flex: 1; text-align: right; }
 .footer-content p { margin: 0; }
 .footer-content a {
   color: var(--gold);
