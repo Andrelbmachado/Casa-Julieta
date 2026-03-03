@@ -53,8 +53,72 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 });
 
 // =====================================================
-// CANVAS REMOVED
+// MAGNETIC CURSOR — btn-gold buttons
 // =====================================================
+(function initMagneticBtn() {
+  if ('ontouchstart' in window) return;
+
+  // Create circle element
+  const circle = document.createElement('div');
+  circle.className = 'magnetic-circle';
+  circle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#003912" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+  document.body.appendChild(circle);
+
+  let mx = 0, my = 0;
+  let cx = 0, cy = 0;
+  let active = false;
+  let currentBtn = null;
+  const EASE = 0.18;
+  const MAGNETIC_STRENGTH = 0.35; // how strongly it pulls back (0-1)
+
+  window.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+  });
+
+  function tick() {
+    if (active && currentBtn) {
+      const rect = currentBtn.getBoundingClientRect();
+      const btnCx = rect.left + rect.width / 2;
+      const btnCy = rect.top + rect.height / 2;
+
+      // Magnetic: blend mouse pos toward button center
+      const targetX = mx + (btnCx - mx) * MAGNETIC_STRENGTH;
+      const targetY = my + (btnCy - my) * MAGNETIC_STRENGTH;
+
+      cx += (targetX - cx) * EASE;
+      cy += (targetY - cy) * EASE;
+    } else {
+      cx += (mx - cx) * 0.3;
+      cy += (my - cy) * 0.3;
+    }
+
+    circle.style.left = cx + 'px';
+    circle.style.top = cy + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  document.querySelectorAll('.btn-gold').forEach((btn) => {
+    btn.addEventListener('mouseenter', () => {
+      active = true;
+      currentBtn = btn;
+      circle.classList.add('active');
+      // Hide default cursor on body
+      document.body.style.cursor = 'none';
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      active = false;
+      currentBtn = null;
+      circle.classList.remove('active');
+      document.body.style.cursor = '';
+    });
+
+    // Click the circle -> navigate
+    btn.style.pointerEvents = 'auto';
+  });
+})();
 
 // =====================================================
 // HERO TITLE SPOTLIGHT — "lantern" follows the cursor

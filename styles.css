@@ -366,12 +366,38 @@ h1 {
 .btn-gold {
   background: var(--gold);
   color: var(--green);
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='17' fill='%23DBAD00'/%3E%3Cpath d='M14 11l8 7-8 7' fill='none' stroke='%23003912' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18, pointer;
+  cursor: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
 }
 .btn-gold:hover {
+  opacity: 0;
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(219, 173, 0, 0.3);
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='17' fill='%23DBAD00'/%3E%3Cpath d='M14 11l8 7-8 7' fill='none' stroke='%23003912' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18, pointer;
+  box-shadow: none;
+}
+
+/* Magnetic cursor circle */
+.magnetic-circle {
+  position: fixed;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--gold);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.25s cubic-bezier(0.25,1,0.5,1), opacity 0.2s ease;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.magnetic-circle.active {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+.magnetic-circle svg {
+  width: 28px;
+  height: 28px;
 }
 
 .btn-outline {
