@@ -359,7 +359,7 @@ h1 {
   flex-wrap: wrap;
 }
 
-/* ---- Buttons with cursor-follow glow ---- */
+/* ---- Buttons ---- */
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
@@ -370,23 +370,40 @@ h1 {
   border: 1px solid transparent;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn .glow {
-  position: absolute;
-  width: 120px; height: 120px;
+/* ---- Magnetic Cursor Follower ---- */
+.cursor-follower {
+  position: fixed;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.55) 0%, transparent 70%);
+  border: 1.5px solid var(--gold);
   pointer-events: none;
+  z-index: 9999;
   transform: translate(-50%, -50%);
+  transition: width 0.35s cubic-bezier(0.25,1,0.5,1),
+              height 0.35s cubic-bezier(0.25,1,0.5,1),
+              background 0.35s ease,
+              border-color 0.35s ease,
+              opacity 0.25s ease;
   opacity: 0;
-  transition: opacity 0.05s;
-  mix-blend-mode: overlay;
+  mix-blend-mode: difference;
+  background: transparent;
 }
 
-.btn:hover .glow { opacity: 1; }
+.cursor-follower.visible {
+  opacity: 1;
+}
+
+.cursor-follower.expanded {
+  width: 70px;
+  height: 70px;
+  background: rgba(219, 173, 0, 0.15);
+  border-color: var(--gold);
+}
 
 .btn-gold {
   background: var(--gold);
