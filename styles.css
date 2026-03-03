@@ -37,16 +37,13 @@ body {
   position: relative;
 }
 
-/* Velvet canvas — rendered by JS behind everything */
+/* Velvet canvas — no longer used */
 #velvet-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 /* Everything else sits above the canvas */
-.site-header, .site-footer, .breadcrumb-bar {
+.site-header, .site-footer {
   position: relative;
   z-index: 1;
 }
@@ -94,9 +91,14 @@ h1, h2, h3 {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(0, 38, 12, 0.92);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
+}
+
+.header-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2rem 0 0.6rem;
 }
 
 .nav-bar {
@@ -109,7 +111,7 @@ h1, h2, h3 {
 /* Brand with gold shimmer effect */
 .brand {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.35rem;
+  font-size: 1.8rem;
   font-weight: 700;
   text-decoration: none;
   letter-spacing: 0.06em;
@@ -139,6 +141,7 @@ h1, h2, h3 {
 .main-nav {
   display: flex;
   gap: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .main-nav a {
@@ -178,21 +181,7 @@ h1, h2, h3 {
   transition: transform 0.3s, opacity 0.3s;
 }
 
-/* ---- Breadcrumb ---- */
-.breadcrumb-bar {
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--border);
-  background: rgba(0, 38, 12, 0.6);
-  backdrop-filter: blur(8px);
-}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.82rem;
-  color: var(--muted);
-}
+/* ---- Breadcrumb (removed) ---- */
 
 .breadcrumb a {
   color: var(--muted);
