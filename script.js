@@ -1,5 +1,9 @@
 /* Casa Julieta — Scripts */
 
+// ---- Always start at top on reload ----
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 // ---- Year ----
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
