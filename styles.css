@@ -240,8 +240,9 @@ h1, h2, h3 {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(5rem, 14vw, 12rem);
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.2;
   margin: 0 0 2.5rem;
+  padding-bottom: 0.15em;
   position: relative;
   cursor: default;
 
