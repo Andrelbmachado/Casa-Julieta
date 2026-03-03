@@ -25,34 +25,48 @@ window.addEventListener('beforeunload', () => {
   document.body.style.overflow = 'hidden';
 
   function run() {
-    /* ---- measure brand's natural (final) position ---- */
-    var brandRect = brand.getBoundingClientRect();
-    var brandCx   = brandRect.left + brandRect.width / 2;
-    var brandCy   = brandRect.top  + brandRect.height / 2;
-    var screenCx  = window.innerWidth / 2;
-    var screenCy  = window.innerHeight / 2;
+    /* ---- measure brand at its natural (small) size ---- */
+    var brandRect   = brand.getBoundingClientRect();
+    var brandW      = brandRect.width;
+    var brandH      = brandRect.height;
+    var brandCx     = brandRect.left + brandW / 2;
+    var brandCy     = brandRect.top  + brandH / 2;
+    var screenCx    = window.innerWidth / 2;
+    var screenCy    = window.innerHeight / 2;
+    var dx          = screenCx - brandCx;
+    var dy          = screenCy - brandCy;
 
-    /* translate needed to move brand from its DOM position to screen center */
-    var dx = screenCx - brandCx;
-    var dy = screenCy - brandCy;
-
+    /* Target visual scale (how big "Casa Julieta" should look at peak) */
     var heroScale = 4.5;
+
+    /*
+     * Safari fix: render font at the LARGE size so it's crisp,
+     * then use scale < 1 to shrink it visually.
+     *
+     * We set font-size *= heroScale.  At that font-size, scale=1 = full big.
+     * The "small brand" final state = scale(1/heroScale).
+     */
+    var originalFontSize = parseFloat(getComputedStyle(brand).fontSize);
+    var bigFontSize      = originalFontSize * heroScale;
+    var shrinkScale      = 1 / heroScale;  // scale to look like original size
 
     var navLineRect = navLine.getBoundingClientRect();
     var navCenterX  = navLineRect.left + navLineRect.width / 2;
-
     var offsets = navLinks.map(function (link) {
       var r = link.getBoundingClientRect();
       return navCenterX - (r.left + r.width / 2);
     });
 
-    /* ---- initial states (brand stays in DOM flow!) ---- */
+    /* ---- initial states ---- */
+    // Set large font-size, compensate with scale so it LOOKS the same
     gsap.set(brand, {
-      x: dx,
-      y: dy,
-      scale: heroScale,
+      fontSize: bigFontSize,
+      scale: shrinkScale,            // visually same as original
+      x: dx * (1 / shrinkScale),     // adjust translate for the scaled coords
+      y: dy * (1 / shrinkScale),
       zIndex: 10000,
-      opacity: 0
+      opacity: 0,
+      transformOrigin: 'center center'
     });
 
     gsap.set(navLine, { scaleX: 0 });
@@ -71,22 +85,27 @@ window.addEventListener('beforeunload', () => {
     /* 0–0.3s: fade in brand at center of screen */
     tl.to(brand, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
 
-    /* 0–2s: brand pulses from small→large at center */
+    /* 0–2s: brand grows from small→full big at center (scale goes 0.5→1 in big-font space) */
+    var startScale = 0.5 * shrinkScale;  // start even smaller
     tl.fromTo(brand,
-      { scale: 0.5, x: dx, y: dy },
-      { scale: heroScale, x: dx, y: dy, duration: 2, ease: 'power2.out' },
+      { scale: startScale },
+      { scale: 1, duration: 2, ease: 'power2.out' },
       0
     );
 
-    /* 2–3s: brand moves back to header position & shrinks to scale 1 */
+    /* 2–3s: brand shrinks to header size & moves back to position */
     tl.to(brand, {
       x: 0,
       y: 0,
-      scale: 1,
+      scale: shrinkScale,
       duration: 1,
       ease: 'power3.inOut',
       onComplete: function () {
-        gsap.set(brand, { clearProps: 'x,y,scale,zIndex,opacity' });
+        // Restore original font-size and clear transforms
+        gsap.set(brand, {
+          fontSize: originalFontSize,
+          clearProps: 'x,y,scale,zIndex,opacity,transformOrigin'
+        });
       }
     }, 2);
 
