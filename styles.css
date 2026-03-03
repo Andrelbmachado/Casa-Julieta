@@ -293,12 +293,15 @@ h1, h2, h3 {
   text-decoration: none;
   padding: 0.3rem 0.8rem;
   margin-top: 3rem;
-  transition: opacity 0.3s;
+  transition: filter 0.3s, text-shadow 0.3s;
   background: none;
   border: none;
   cursor: pointer;
 }
-.hero-cta:hover { opacity: 0.7; }
+.hero-cta:hover {
+  filter: brightness(1.5);
+  text-shadow: 0 0 12px rgba(219,173,0,0.5);
+}
 
 .hero-chevron {
   width: 28px;
