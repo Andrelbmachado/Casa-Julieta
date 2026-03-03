@@ -23,40 +23,6 @@
   --radius: 0.75rem;
 }
 
-/* ---- Intro Animation ---- */
-.intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.intro-title {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(5rem, 14vw, 12rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  background: linear-gradient(
-    105deg,
-    var(--gold-dark) 0%,
-    var(--gold) 25%,
-    #fff5c0 40%,
-    var(--gold) 55%,
-    var(--gold-dark) 80%,
-    var(--gold) 100%
-  );
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: goldShimmer 4s ease-in-out infinite;
-  will-change: transform;
-}
-
 /* ---- Reset ---- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }

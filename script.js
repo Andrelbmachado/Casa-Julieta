@@ -10,30 +10,32 @@ window.addEventListener('beforeunload', () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 });
 
-// ---- Intro animation (GSAP) ----
+// ---- Intro animation (GSAP) — animates real site elements ----
 (function () {
-  var overlay    = document.getElementById('introOverlay');
-  if (!overlay || typeof gsap === 'undefined') return;
+  if (typeof gsap === 'undefined') return;
 
-  var introTitle = document.getElementById('introTitle');
-  var brand      = document.querySelector('.brand');
-  var navLine    = document.getElementById('navLine');
-  var mainNav    = document.querySelector('.main-nav');
-  var navLinks   = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
+  var brand    = document.querySelector('.brand');
+  var navLine  = document.getElementById('navLine');
+  var mainNav  = document.querySelector('.main-nav');
+  var navLinks = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
+  var hero     = document.querySelector('.hero');
+  var heroCta  = document.querySelector('.hero-cta');
+  var heroTitle = document.getElementById('heroTitle');
 
-  if (!introTitle || !brand || !navLine || !mainNav) return;
+  if (!brand || !navLine || !mainNav) return;
 
   document.body.style.overflow = 'hidden';
 
   function run() {
-    /* ---- measurements at natural state ---- */
+    /* ---- measure final positions ---- */
     var brandRect  = brand.getBoundingClientRect();
-    var introRect  = introTitle.getBoundingClientRect();
-    var screenCx   = window.innerWidth / 2;
-    var screenCy   = window.innerHeight / 2;
     var brandCx    = brandRect.left + brandRect.width / 2;
     var brandCy    = brandRect.top  + brandRect.height / 2;
-    var endScale   = brandRect.height / introRect.height;
+    var screenCx   = window.innerWidth / 2;
+    var screenCy   = window.innerHeight / 2;
+
+    /* How big the brand needs to be to fill like the hero title */
+    var heroScale  = 4.5;
 
     var navLineRect = navLine.getBoundingClientRect();
     var navCenterX  = navLineRect.left + navLineRect.width / 2;
@@ -43,13 +45,28 @@ window.addEventListener('beforeunload', () => {
       return navCenterX - (r.left + r.width / 2);
     });
 
-    /* ---- initial animated states ---- */
-    gsap.set(brand, { visibility: 'hidden' });
-    gsap.set(introTitle, { scale: 0.3 });
+    /* ---- set initial animated states ---- */
+    // Brand starts big and centered on screen
+    gsap.set(brand, {
+      position: 'fixed',
+      left: screenCx,
+      top: screenCy,
+      xPercent: -50,
+      yPercent: -50,
+      scale: heroScale,
+      zIndex: 10000,
+      opacity: 0
+    });
+
+    // Nav line and links hidden
     gsap.set(navLine, { scaleX: 0 });
     navLinks.forEach(function (link, i) {
       gsap.set(link, { x: offsets[i], opacity: 0 });
     });
+
+    // Hide hero content during intro
+    if (heroTitle) gsap.set(heroTitle, { opacity: 0 });
+    if (heroCta) gsap.set(heroCta, { opacity: 0 });
 
     /* ---- timeline ---- */
     var tl = gsap.timeline({
@@ -58,36 +75,40 @@ window.addEventListener('beforeunload', () => {
       }
     });
 
-    /* 0–2s: title grows from small to large */
-    tl.to(introTitle, { scale: 1, duration: 2, ease: 'power2.out' }, 0);
+    /* 0–0.3s: fade in brand at center */
+    tl.to(brand, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
 
-    /* 2–3s: title flies to brand position & shrinks */
-    tl.to(introTitle, {
-      x: brandCx - screenCx,
-      y: brandCy - screenCy,
-      scale: endScale,
+    /* 0–2s: brand stays centered, grows from small to full heroScale */
+    tl.fromTo(brand,
+      { scale: 0.5 },
+      { scale: heroScale, duration: 2, ease: 'power2.out' },
+      0
+    );
+
+    /* 2–3s: brand shrinks & moves to its natural header position */
+    tl.to(brand, {
+      left: brandCx,
+      top: brandCy,
+      scale: 1,
       duration: 1,
-      ease: 'power3.inOut'
+      ease: 'power3.inOut',
+      onComplete: function () {
+        // Reset to normal flow
+        gsap.set(brand, {
+          clearProps: 'position,left,top,xPercent,yPercent,scale,zIndex,opacity'
+        });
+      }
     }, 2);
 
-    /* 0–3s: gold line grows from center */
-    tl.to(navLine, { scaleX: 1, duration: 3, ease: 'power2.inOut' }, 0);
+    /* 2–3s: gold line grows from center */
+    tl.to(navLine, { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 2);
 
-    /* 0–3s: nav links spread outward from center */
-    tl.to(navLinks, { x: 0, opacity: 1, duration: 3, ease: 'power2.out' }, 0);
+    /* 2–3s: nav links spread outward from center */
+    tl.to(navLinks, { x: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.05 }, 2);
 
-    /* 3–3.3s: overlay fades, brand appears */
-    tl.to(overlay, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'none',
-      onStart: function () {
-        gsap.set(brand, { visibility: 'visible' });
-      },
-      onComplete: function () {
-        overlay.remove();
-      }
-    }, 3);
+    /* 3–3.5s: hero title & CTA fade in */
+    if (heroTitle) tl.to(heroTitle, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3);
+    if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3.2);
   }
 
   /* wait for fonts so measurements are accurate */
