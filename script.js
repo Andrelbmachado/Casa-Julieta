@@ -18,23 +18,6 @@ const fadeObserver = new IntersectionObserver(
 );
 document.querySelectorAll(".fade-up").forEach((el) => fadeObserver.observe(el));
 
-// ---- Header hide on scroll ----
-(function initHeaderScroll() {
-  const header = document.querySelector(".site-header");
-  if (!header) return;
-  let lastY = 0;
-  const THRESHOLD = 60;
-  window.addEventListener("scroll", () => {
-    const y = window.scrollY;
-    if (y > THRESHOLD) {
-      header.classList.add("header-hidden");
-    } else {
-      header.classList.remove("header-hidden");
-    }
-    lastY = y;
-  }, { passive: true });
-})();
-
 // ---- Mobile menu ----
 const toggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".main-nav");
