@@ -23,6 +23,40 @@
   --radius: 0.75rem;
 }
 
+/* ---- Intro Animation ---- */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.intro-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(5rem, 14vw, 12rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  background: linear-gradient(
+    105deg,
+    var(--gold-dark) 0%,
+    var(--gold) 25%,
+    #fff5c0 40%,
+    var(--gold) 55%,
+    var(--gold-dark) 80%,
+    var(--gold) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 4s ease-in-out infinite;
+  will-change: transform;
+}
+
 /* ---- Reset ---- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -103,12 +137,19 @@ h1, h2, h3 {
   padding: 1.2rem 0 0.6rem;
 }
 
+.nav-line {
+  width: 90%;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto;
+  transform-origin: center;
+}
+
 .main-nav {
   display: flex;
   justify-content: center;
   gap: 9rem;
   padding: 0.7rem 0;
-  border-top: 1px solid var(--gold);
   width: 90%;
   margin: 0 auto;
 }
@@ -697,7 +738,8 @@ h2 {
 .grid .fade-up:nth-child(5) { transition-delay: 0.28s; }
 .grid .fade-up:nth-child(6) { transition-delay: 0.35s; }
 
-body { animation: pageIn 0.45s ease both; }
+/* page-in disabled — intro animation handles it */
+/* body { animation: pageIn 0.45s ease both; } */
 @keyframes pageIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -713,6 +755,7 @@ body { animation: pageIn 0.45s ease both; }
 /* Tablet portrait */
 @media (max-width: 768px) {
   .menu-toggle { display: flex; }
+  .nav-line { display: none; }
 
   .main-nav {
     position: fixed;
@@ -732,7 +775,6 @@ body { animation: pageIn 0.45s ease both; }
     pointer-events: none;
     transition: opacity 0.35s;
     z-index: 99;
-    border-top: none;
     overflow: hidden;
   }
   .main-nav.open { opacity: 1; pointer-events: all; }

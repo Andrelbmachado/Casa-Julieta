@@ -10,6 +10,96 @@ window.addEventListener('beforeunload', () => {
   window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 });
 
+// ---- Intro animation (GSAP) ----
+(function () {
+  var overlay    = document.getElementById('introOverlay');
+  if (!overlay || typeof gsap === 'undefined') return;
+
+  var introTitle = document.getElementById('introTitle');
+  var brand      = document.querySelector('.brand');
+  var navLine    = document.getElementById('navLine');
+  var mainNav    = document.querySelector('.main-nav');
+  var navLinks   = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
+
+  if (!introTitle || !brand || !navLine || !mainNav) return;
+
+  document.body.style.overflow = 'hidden';
+
+  function run() {
+    /* ---- measurements at natural state ---- */
+    var brandRect  = brand.getBoundingClientRect();
+    var introRect  = introTitle.getBoundingClientRect();
+    var screenCx   = window.innerWidth / 2;
+    var screenCy   = window.innerHeight / 2;
+    var brandCx    = brandRect.left + brandRect.width / 2;
+    var brandCy    = brandRect.top  + brandRect.height / 2;
+    var endScale   = brandRect.height / introRect.height;
+
+    var navLineRect = navLine.getBoundingClientRect();
+    var navCenterX  = navLineRect.left + navLineRect.width / 2;
+
+    var offsets = navLinks.map(function (link) {
+      var r = link.getBoundingClientRect();
+      return navCenterX - (r.left + r.width / 2);
+    });
+
+    /* ---- initial animated states ---- */
+    gsap.set(brand, { visibility: 'hidden' });
+    gsap.set(introTitle, { scale: 0.3 });
+    gsap.set(navLine, { scaleX: 0 });
+    navLinks.forEach(function (link, i) {
+      gsap.set(link, { x: offsets[i], opacity: 0 });
+    });
+
+    /* ---- timeline ---- */
+    var tl = gsap.timeline({
+      onComplete: function () {
+        document.body.style.overflow = '';
+      }
+    });
+
+    /* 0–2s: title grows from small to large */
+    tl.to(introTitle, { scale: 1, duration: 2, ease: 'power2.out' }, 0);
+
+    /* 2–3s: title flies to brand position & shrinks */
+    tl.to(introTitle, {
+      x: brandCx - screenCx,
+      y: brandCy - screenCy,
+      scale: endScale,
+      duration: 1,
+      ease: 'power3.inOut'
+    }, 2);
+
+    /* 0–3s: gold line grows from center */
+    tl.to(navLine, { scaleX: 1, duration: 3, ease: 'power2.inOut' }, 0);
+
+    /* 0–3s: nav links spread outward from center */
+    tl.to(navLinks, { x: 0, opacity: 1, duration: 3, ease: 'power2.out' }, 0);
+
+    /* 3–3.3s: overlay fades, brand appears */
+    tl.to(overlay, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'none',
+      onStart: function () {
+        gsap.set(brand, { visibility: 'visible' });
+      },
+      onComplete: function () {
+        overlay.remove();
+      }
+    }, 3);
+  }
+
+  /* wait for fonts so measurements are accurate */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      requestAnimationFrame(run);
+    });
+  } else {
+    window.addEventListener('load', run);
+  }
+})();
+
 // ---- Year ----
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
