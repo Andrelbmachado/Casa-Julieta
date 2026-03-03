@@ -101,11 +101,17 @@ window.addEventListener('beforeunload', () => {
       duration: 1,
       ease: 'power3.inOut',
       onComplete: function () {
-        // Keep large font-size + shrinkScale for crisp rendering
-        // Only clear positioning props
+        // Clear positioning props, keep hi-res during settle
         gsap.set(brand, {
           clearProps: 'x,y,zIndex,opacity,transformOrigin'
         });
+        // 2s later, swap to original small font-size
+        setTimeout(function () {
+          gsap.set(brand, {
+            fontSize: originalFontSize,
+            scale: 1
+          });
+        }, 2000);
       }
     }, 2);
 
