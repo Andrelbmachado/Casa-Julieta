@@ -43,57 +43,6 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 });
 
 // =====================================================
-// PARALLAX — full-page: sky fixed, building descends right
-// =====================================================
-(function initParallax() {
-  const wrapper = document.getElementById("parallaxWrapper");
-  const sky     = document.getElementById("parallaxSky");
-  const bld     = document.getElementById("parallaxBuilding");
-  if (!wrapper || !sky || !bld) return;
-
-  const SKY_SPEED = 0.06;       // very subtle sky drift
-  const BLD_SPEED = 1.1;        // strong building rise
-  const overlay   = document.querySelector(".parallax-overlay");
-
-  function onScroll() {
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const wrapperH    = wrapper.offsetHeight;
-    const scrolled    = Math.max(-wrapperRect.top, 0);
-
-    // hide fixed layers once we exit the parallax zone
-    const inZone = wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0;
-    sky.classList.toggle("hidden", !inZone);
-    bld.classList.toggle("hidden", !inZone);
-    if (overlay) overlay.classList.toggle("hidden", !inZone);
-
-    if (!inZone) return;
-
-    // sky — small upward drift
-    sky.style.transform = `translateY(-${scrolled * SKY_SPEED}px)`;
-
-    // building — starts at top:100vh (CSS), moves UP strongly
-    bld.style.transform = `translateY(-${scrolled * BLD_SPEED}px)`;
-  }
-
-  // Observe panels for fade-in
-  const panelObs = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("visible");
-          panelObs.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.25 }
-  );
-  document.querySelectorAll(".px-panel").forEach((p) => panelObs.observe(p));
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-})();
-
-// =====================================================
 // VELVET CANVAS — micro fibres that react to the mouse
 // =====================================================
 (function initVelvet() {
