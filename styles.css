@@ -24,37 +24,6 @@
 }
 
 /* ---- Intro hi-res title ---- */
-.intro-hires {
-  position: fixed;
-  z-index: 10000;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.3);
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(5rem, 14vw, 12rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  background: linear-gradient(
-    105deg,
-    var(--gold-dark) 0%,
-    var(--gold) 25%,
-    #fff5c0 40%,
-    var(--gold) 55%,
-    var(--gold-dark) 80%,
-    var(--gold) 100%
-  );
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: goldShimmer 4s ease-in-out infinite;
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
 /* ---- Reset ---- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
