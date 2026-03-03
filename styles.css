@@ -106,10 +106,11 @@ h1, h2, h3 {
 .main-nav {
   display: flex;
   justify-content: center;
-  gap: 6rem;
+  gap: 9rem;
   padding: 0.7rem 0;
   border-top: 1px solid var(--gold);
-  margin: 0 5%;
+  width: 90%;
+  margin: 0 auto;
 }
 
 /* Brand with gold shimmer effect */
