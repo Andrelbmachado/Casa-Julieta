@@ -172,6 +172,10 @@ h1, h2, h3 {
   flex-direction: column;
   gap: 5px;
   padding: 6px;
+  position: absolute;
+  right: 5%;
+  top: 1.2rem;
+  z-index: 101;
 }
 .menu-toggle span {
   display: block;
@@ -668,6 +672,13 @@ body { animation: pageIn 0.45s ease both; }
 }
 
 /* ---- Responsive ---- */
+
+/* Tablet landscape / small desktop */
+@media (max-width: 1100px) {
+  .main-nav { gap: 4rem; }
+}
+
+/* Tablet portrait */
 @media (max-width: 768px) {
   .menu-toggle { display: flex; }
 
@@ -684,15 +695,61 @@ body { animation: pageIn 0.45s ease both; }
     pointer-events: none;
     transition: opacity 0.35s;
     z-index: 99;
+    border-top: none;
+    width: 100%;
+    padding: 0;
   }
   .main-nav.open { opacity: 1; pointer-events: all; }
   .main-nav a { font-size: 1.2rem; }
 
+  .header-centered { padding: 1rem 0 0.5rem; }
+  .brand { font-size: 1.8rem; }
+
   h1 { font-size: clamp(2rem, 7vw, 2.8rem); }
   .hero-title { font-size: clamp(3.5rem, 14vw, 6rem); }
+  .hero { padding-bottom: 4rem; }
+  .hero-cta { margin-top: 2rem; }
 
   .space-section { min-height: 70vh; }
+  .space-content h2 { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+  .space-logo { max-height: 80px; }
+
+  .contact-row { gap: 2rem; }
+  .contact-title { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+
+  .section { padding: 3.5rem 0; }
 
   .grid { grid-template-columns: 1fr; }
-  .footer-content { flex-direction: column; text-align: center; }
+
+  .footer-content { flex-direction: column; text-align: center; gap: 0.8rem; }
+  .footer-spacer { display: none; }
+  .footer-center, .footer-right { flex: none; text-align: center; }
+
+  .page-hero { padding: 3rem 0 1.5rem; }
+  .page-body { padding: 2.5rem 0; }
+}
+
+/* Phone */
+@media (max-width: 480px) {
+  .brand { font-size: 1.5rem; }
+  .hero-title { font-size: clamp(2.8rem, 13vw, 4.5rem); }
+  .hero { min-height: 85vh; padding: 1.5rem; padding-bottom: 3rem; }
+
+  .space-section { min-height: 60vh; padding: 2.5rem 0; }
+  .space-content p { font-size: 0.9rem; }
+  .space-logo { max-height: 60px; }
+
+  .contact-row { flex-direction: column; gap: 1.5rem; align-items: center; }
+  .contact-item { font-size: 0.8rem; }
+
+  .section { padding: 2.5rem 0; }
+  h2 { font-size: clamp(1.5rem, 5vw, 2rem); }
+
+  .btn { padding: 0.6rem 1.2rem; font-size: 0.85rem; }
+
+  .map-wrapper iframe { height: 260px; }
+
+  .page-hero { padding: 2rem 0 1rem; }
+  .page-body { padding: 2rem 0; }
+  .page-body .container { max-width: 100%; }
 }
