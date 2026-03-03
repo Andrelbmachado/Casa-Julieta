@@ -366,10 +366,12 @@ h1 {
 .btn-gold {
   background: var(--gold);
   color: var(--green);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='17' fill='%23DBAD00'/%3E%3Cpath d='M14 11l8 7-8 7' fill='none' stroke='%23003912' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18, pointer;
 }
 .btn-gold:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(219, 173, 0, 0.3);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36'%3E%3Ccircle cx='18' cy='18' r='17' fill='%23DBAD00'/%3E%3Cpath d='M14 11l8 7-8 7' fill='none' stroke='%23003912' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 18 18, pointer;
 }
 
 .btn-outline {
