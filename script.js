@@ -19,7 +19,6 @@ window.addEventListener('beforeunload', () => {
   var mainNav  = document.querySelector('.main-nav');
   var navLinks = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
   var heroCta  = document.querySelector('.hero-cta');
-  var heroTitle = document.getElementById('heroTitle');
 
   if (!brand || !navLine || !mainNav) return;
 
@@ -60,7 +59,6 @@ window.addEventListener('beforeunload', () => {
     navLinks.forEach(function (link, i) {
       gsap.set(link, { x: offsets[i], opacity: 0 });
     });
-    if (heroTitle) gsap.set(heroTitle, { opacity: 0 });
     if (heroCta) gsap.set(heroCta, { opacity: 0 });
 
     /* ---- timeline ---- */
@@ -98,9 +96,8 @@ window.addEventListener('beforeunload', () => {
     /* 2–3s: nav links spread from center (already at final height) */
     tl.to(navLinks, { x: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.05 }, 2);
 
-    /* 3–3.5s: hero content fades in */
-    if (heroTitle) tl.to(heroTitle, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3);
-    if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3.2);
+    /* 3–3.5s: hero CTA fades in */
+    if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3);
   }
 
   /* wait for fonts so measurements are accurate */
