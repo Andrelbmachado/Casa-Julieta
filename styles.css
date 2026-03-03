@@ -242,23 +242,43 @@ h1, h2, h3 {
   font-weight: 700;
   line-height: 1.05;
   margin: 0 0 2.5rem;
-  color: var(--gold);
-  -webkit-text-fill-color: var(--gold);
-  text-shadow: 0 4px 30px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
   position: relative;
   cursor: default;
-  transition: filter 0.4s ease;
+
+  /* Base dark gold color */
+  color: var(--gold-dark);
+  -webkit-text-fill-color: transparent;
+  background: var(--gold-dark);
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  /* Shadow for volume */
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5)) drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+
+  /* Lantern variables — updated by JS */
+  --spotlight-x: -200px;
+  --spotlight-y: -200px;
+  --spotlight-opacity: 0;
 }
 
-/* White shimmer only on hover */
-.hero-title:hover {
-  animation: whiteShine 1.2s ease forwards;
-}
-
-@keyframes whiteShine {
-  0%   { filter: brightness(1); -webkit-text-fill-color: var(--gold); }
-  50%  { filter: brightness(1.8); -webkit-text-fill-color: #fff5d6; }
-  100% { filter: brightness(1); -webkit-text-fill-color: var(--gold); }
+/* Bright layer — radial "lantern" that follows cursor */
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 120px at var(--spotlight-x) var(--spotlight-y),
+    #fffbe6 0%,
+    #fff5c0 25%,
+    var(--gold) 50%,
+    transparent 70%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: var(--spotlight-opacity);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .hero-cta {

@@ -149,3 +149,27 @@ document.querySelectorAll(".btn").forEach((btn) => {
     glow.style.opacity = "0";
   });
 });
+
+// =====================================================
+// HERO TITLE SPOTLIGHT — "lantern" follows the cursor
+// =====================================================
+(function initSpotlight() {
+  const title = document.getElementById("heroTitle");
+  if (!title) return;
+
+  // Set data-text for the ::after pseudo element
+  title.setAttribute("data-text", title.textContent);
+
+  title.addEventListener("mousemove", (e) => {
+    const rect = title.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    title.style.setProperty("--spotlight-x", x + "px");
+    title.style.setProperty("--spotlight-y", y + "px");
+    title.style.setProperty("--spotlight-opacity", "1");
+  });
+
+  title.addEventListener("mouseleave", () => {
+    title.style.setProperty("--spotlight-opacity", "0");
+  });
+})();
