@@ -18,7 +18,6 @@ window.addEventListener('beforeunload', () => {
   var navLine  = document.getElementById('navLine');
   var mainNav  = document.querySelector('.main-nav');
   var navLinks = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
-  var hero     = document.querySelector('.hero');
   var heroCta  = document.querySelector('.hero-cta');
   var heroTitle = document.getElementById('heroTitle');
 
@@ -27,15 +26,18 @@ window.addEventListener('beforeunload', () => {
   document.body.style.overflow = 'hidden';
 
   function run() {
-    /* ---- measure final positions ---- */
-    var brandRect  = brand.getBoundingClientRect();
-    var brandCx    = brandRect.left + brandRect.width / 2;
-    var brandCy    = brandRect.top  + brandRect.height / 2;
-    var screenCx   = window.innerWidth / 2;
-    var screenCy   = window.innerHeight / 2;
+    /* ---- measure brand's natural (final) position ---- */
+    var brandRect = brand.getBoundingClientRect();
+    var brandCx   = brandRect.left + brandRect.width / 2;
+    var brandCy   = brandRect.top  + brandRect.height / 2;
+    var screenCx  = window.innerWidth / 2;
+    var screenCy  = window.innerHeight / 2;
 
-    /* How big the brand needs to be to fill like the hero title */
-    var heroScale  = 4.5;
+    /* translate needed to move brand from its DOM position to screen center */
+    var dx = screenCx - brandCx;
+    var dy = screenCy - brandCy;
+
+    var heroScale = 4.5;
 
     var navLineRect = navLine.getBoundingClientRect();
     var navCenterX  = navLineRect.left + navLineRect.width / 2;
@@ -45,26 +47,19 @@ window.addEventListener('beforeunload', () => {
       return navCenterX - (r.left + r.width / 2);
     });
 
-    /* ---- set initial animated states ---- */
-    // Brand starts big and centered on screen
+    /* ---- initial states (brand stays in DOM flow!) ---- */
     gsap.set(brand, {
-      position: 'fixed',
-      left: screenCx,
-      top: screenCy,
-      xPercent: -50,
-      yPercent: -50,
+      x: dx,
+      y: dy,
       scale: heroScale,
       zIndex: 10000,
       opacity: 0
     });
 
-    // Nav line and links hidden
     gsap.set(navLine, { scaleX: 0 });
     navLinks.forEach(function (link, i) {
       gsap.set(link, { x: offsets[i], opacity: 0 });
     });
-
-    // Hide hero content during intro
     if (heroTitle) gsap.set(heroTitle, { opacity: 0 });
     if (heroCta) gsap.set(heroCta, { opacity: 0 });
 
@@ -75,38 +70,35 @@ window.addEventListener('beforeunload', () => {
       }
     });
 
-    /* 0–0.3s: fade in brand at center */
+    /* 0–0.3s: fade in brand at center of screen */
     tl.to(brand, { opacity: 1, duration: 0.3, ease: 'power1.in' }, 0);
 
-    /* 0–2s: brand stays centered, grows from small to full heroScale */
+    /* 0–2s: brand pulses from small→large at center */
     tl.fromTo(brand,
-      { scale: 0.5 },
-      { scale: heroScale, duration: 2, ease: 'power2.out' },
+      { scale: 0.5, x: dx, y: dy },
+      { scale: heroScale, x: dx, y: dy, duration: 2, ease: 'power2.out' },
       0
     );
 
-    /* 2–3s: brand shrinks & moves to its natural header position */
+    /* 2–3s: brand moves back to header position & shrinks to scale 1 */
     tl.to(brand, {
-      left: brandCx,
-      top: brandCy,
+      x: 0,
+      y: 0,
       scale: 1,
       duration: 1,
       ease: 'power3.inOut',
       onComplete: function () {
-        // Reset to normal flow
-        gsap.set(brand, {
-          clearProps: 'position,left,top,xPercent,yPercent,scale,zIndex,opacity'
-        });
+        gsap.set(brand, { clearProps: 'x,y,scale,zIndex,opacity' });
       }
     }, 2);
 
-    /* 2–3s: gold line grows from center */
+    /* 2–3s: gold line grows from center (already at final height) */
     tl.to(navLine, { scaleX: 1, duration: 1, ease: 'power2.inOut' }, 2);
 
-    /* 2–3s: nav links spread outward from center */
+    /* 2–3s: nav links spread from center (already at final height) */
     tl.to(navLinks, { x: 0, opacity: 1, duration: 1, ease: 'power2.out', stagger: 0.05 }, 2);
 
-    /* 3–3.5s: hero title & CTA fade in */
+    /* 3–3.5s: hero content fades in */
     if (heroTitle) tl.to(heroTitle, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3);
     if (heroCta) tl.to(heroCta, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 3.2);
   }
