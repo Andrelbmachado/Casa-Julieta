@@ -94,14 +94,6 @@ h1, h2, h3 {
   background: transparent;
 }
 
-.site-header::after {
-  content: "";
-  display: block;
-  height: 1px;
-  background: var(--gold);
-  margin: 0 5%;
-}
-
 .header-centered {
   display: flex;
   flex-direction: row;
@@ -116,6 +108,8 @@ h1, h2, h3 {
   justify-content: center;
   gap: 3rem;
   padding: 0.7rem 0;
+  border-top: 1px solid var(--gold);
+  margin: 0 5%;
 }
 
 /* Brand with gold shimmer effect */
@@ -362,37 +356,6 @@ h1 {
   position: relative;
   overflow: visible;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* ---- Magnetic Cursor Follower ---- */
-.cursor-follower {
-  position: fixed;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1.5px solid var(--gold);
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.35s cubic-bezier(0.25,1,0.5,1),
-              height 0.35s cubic-bezier(0.25,1,0.5,1),
-              background 0.35s ease,
-              border-color 0.35s ease,
-              opacity 0.25s ease;
-  opacity: 0;
-  mix-blend-mode: difference;
-  background: transparent;
-}
-
-.cursor-follower.visible {
-  opacity: 1;
-}
-
-.cursor-follower.expanded {
-  width: 70px;
-  height: 70px;
-  background: rgba(219, 173, 0, 0.15);
-  border-color: var(--gold);
 }
 
 .btn-gold {

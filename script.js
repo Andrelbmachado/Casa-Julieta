@@ -51,54 +51,6 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 // =====================================================
 
 // =====================================================
-// MAGNETIC CURSOR FOLLOWER — expands on "Saiba mais" hover
-// =====================================================
-(function initCursorFollower() {
-  // Only on non-touch devices
-  if ('ontouchstart' in window) return;
-
-  const follower = document.createElement('div');
-  follower.className = 'cursor-follower';
-  document.body.appendChild(follower);
-
-  let mx = -100, my = -100; // mouse position
-  let fx = -100, fy = -100; // follower position
-  const EASE = 0.15;
-
-  window.addEventListener('mousemove', (e) => {
-    mx = e.clientX;
-    my = e.clientY;
-    follower.classList.add('visible');
-  });
-
-  window.addEventListener('mouseout', (e) => {
-    if (!e.relatedTarget && !e.toElement) {
-      follower.classList.remove('visible');
-    }
-  });
-
-  // Animate position with easing
-  function tick() {
-    fx += (mx - fx) * EASE;
-    fy += (my - fy) * EASE;
-    follower.style.left = fx + 'px';
-    follower.style.top = fy + 'px';
-    requestAnimationFrame(tick);
-  }
-  tick();
-
-  // Expand on .btn-gold buttons ("Saiba mais")
-  document.querySelectorAll('.btn-gold').forEach((btn) => {
-    btn.addEventListener('mouseenter', () => {
-      follower.classList.add('expanded');
-    });
-    btn.addEventListener('mouseleave', () => {
-      follower.classList.remove('expanded');
-    });
-  });
-})();
-
-// =====================================================
 // HERO TITLE SPOTLIGHT — "lantern" follows the cursor
 // =====================================================
 (function initSpotlight() {
