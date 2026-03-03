@@ -104,12 +104,14 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
       active = true;
       currentBtn = btn;
       circle.classList.add('active');
+      document.body.style.cursor = 'none';
     });
 
     btn.addEventListener('mouseleave', () => {
       active = false;
       currentBtn = null;
       circle.classList.remove('active');
+      document.body.style.cursor = '';
     });
 
     // Click the circle -> navigate
