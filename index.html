@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -36,6 +37,10 @@
 
   <!-- Hero -->
   <section class="hero" id="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="img/hero-video.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-video-overlay"></div>
     <a href="#sobre" class="hero-cta">
       <span>Conheça o espaço</span>
       <svg class="hero-chevron" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -46,17 +51,44 @@
 
     <!-- SOBRE -->
     <section id="sobre" class="section">
-      <div class="container fade-up">
-        <h2>História viva</h2>
-        <div class="about-text">
-          <p>A Casa Julieta ocupa um dos edifícios mais emblemáticos do centro de Sorocaba. Fundada para reunir experiências únicas sob o mesmo teto, cada andar e cada sala abriga uma proposta diferente — do sabor artesanal ao descanso pleno.</p>
-          <p>Um casarão centenário reinventado em espaço de cultura, gastronomia e bem-estar.</p>
+      <div class="container fade-up about-row">
+        <div class="about-col">
+          <h2>História viva</h2>
+          <div class="about-text" id="aboutTypewriter">
+            <p>A Casa Julieta ocupa um dos edifícios mais emblemáticos do centro de Sorocaba. Fundada para reunir experiências únicas sob o mesmo teto, cada andar e cada sala abriga uma proposta diferente — do sabor artesanal ao descanso pleno.</p>
+            <p>Um casarão centenário reinventado em espaço de cultura, gastronomia e bem-estar.</p>
+          </div>
+        </div>
+        <div class="about-img">
+          <img src="img/predio-low.png" alt="Casa Julieta — Casarão histórico" />
         </div>
       </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- ESPAÇOS -->
-    <section id="giro-bar" class="space-section fade-up" style="--space-bg:url('img/giro-bar.jpg')">
+    <section class="section" style="padding: 3rem 0 1rem;">
+      <div class="container fade-up" style="text-align:center;">
+        <h2>Conheça os espaços</h2>
+      </div>
+    </section>
+
+    <section id="giro-bar" class="space-section space-section--bar fade-up">
+      <div class="bar-gallery">
+        <div class="bar-gallery-img bar-img-1" data-scroll-zoom="in">
+          <img src="img/bar-amigos.jpg" alt="Amigos brindando no Giro Bar" />
+        </div>
+        <div class="bar-gallery-img bar-img-2" data-scroll-zoom="out">
+          <img src="img/bar-balcao.jpg" alt="Balcão do Giro Bar" />
+        </div>
+        <div class="bar-gallery-img bar-img-3" data-scroll-zoom="in">
+          <img src="img/bar-bartender.jpg" alt="Bartender preparando drink" />
+        </div>
+        <div class="bar-gallery-img bar-img-4" data-scroll-zoom="out">
+          <img src="img/bar-coquetel.jpg" alt="Coquetel artesanal" />
+        </div>
+      </div>
       <div class="space-overlay"></div>
       <div class="space-content">
         <img src="img/giro-bar-logo.png" alt="Giro Bar" class="space-logo" />
@@ -107,7 +139,7 @@
     <!-- LOCALIZAÇÃO -->
     <section id="localizacao" class="section section-alt">
       <div class="container fade-up">
-        <h2>Localização</h2>
+        <h2 class="loc-heading"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Localização</h2>
         <div class="map-wrapper">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3659.3!2d-47.458!3d-23.501!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c5f2c349d1e1b1%3A0x0!2sCentro%2C+Sorocaba+-+SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
@@ -128,15 +160,21 @@
         <h2 class="contact-title">Contato</h2>
         <div class="contact-row">
           <a href="https://www.instagram.com/acasajulieta/" target="_blank" rel="noopener" class="contact-item">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg class="contact-icon-ig" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             <span>@acasajulieta</span>
           </a>
           <a href="mailto:casajulieta137@gmail.com" class="contact-item">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><polyline points="22,4 12,13 2,4"></polyline></svg>
+            <div class="contact-icon-email">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="14" rx="3" ry="3"></rect>
+                <path d="M2 9l10 6 10-6"></path>
+                <path class="envelope-flap-path" d="M2 6l10 7 10-7" fill="none"></path>
+              </svg>
+            </div>
             <span>casajulieta137@gmail.com</span>
           </a>
           <a href="https://bit.ly/casajulieta" target="_blank" rel="noopener" class="contact-item">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <svg class="contact-icon-pin" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
             <span>Ver no mapa</span>
           </a>
         </div>

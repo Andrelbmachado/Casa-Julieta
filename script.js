@@ -128,6 +128,8 @@ window.addEventListener('beforeunload', () => {
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+// ---- Header scroll background (disabled — header is static) ----
+
 // ---- Scroll fade-up ----
 const fadeObserver = new IntersectionObserver(
   (entries) => {
@@ -141,6 +143,59 @@ const fadeObserver = new IntersectionObserver(
   { threshold: 0.12, rootMargin: "0px 0px -30px 0px" }
 );
 document.querySelectorAll(".fade-up").forEach((el) => fadeObserver.observe(el));
+
+// ---- Typewriter effect for "about" text ----
+(function initTypewriter() {
+  const container = document.getElementById('aboutTypewriter');
+  if (!container) return;
+
+  const paragraphs = Array.from(container.querySelectorAll('p'));
+  if (!paragraphs.length) return;
+
+  // Store original text and clear paragraphs
+  const texts = paragraphs.map((p) => p.textContent);
+  paragraphs.forEach((p) => {
+    p.textContent = '';
+    p.classList.add('typewriter-line');
+  });
+
+  let started = false;
+
+  const twObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting && !started) {
+        started = true;
+        twObserver.disconnect();
+        runTypewriter(paragraphs, texts, 0);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  twObserver.observe(container);
+
+  function runTypewriter(els, txts, idx) {
+    if (idx >= els.length) return;
+
+    const el = els[idx];
+    const text = txts[idx];
+    const charCount = text.length;
+    // ~80 chars per second (fast typewriter)
+    const duration = charCount / 80;
+
+    el.textContent = text;
+    el.style.setProperty('--tw-steps', charCount);
+    el.style.setProperty('--tw-duration', duration + 's');
+    el.classList.add('typing');
+
+    // After animation ends, mark done and start next
+    const timeMs = duration * 1000 + 200;
+    setTimeout(() => {
+      el.classList.remove('typing');
+      el.classList.add('done');
+      runTypewriter(els, txts, idx + 1);
+    }, timeMs);
+  }
+})();
 
 // ---- Mobile menu ----
 const toggle = document.querySelector(".menu-toggle");
@@ -254,5 +309,36 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 
   title.addEventListener("mouseleave", () => {
     title.style.setProperty("--spotlight-opacity", "0");
+  });
+})();
+
+// =====================================================
+// BAR GALLERY — Scroll-driven zoom in / zoom out
+// =====================================================
+(function initBarGalleryZoom() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const items = document.querySelectorAll('[data-scroll-zoom]');
+  if (!items.length) return;
+
+  items.forEach((wrapper) => {
+    const img = wrapper.querySelector('img');
+    if (!img) return;
+
+    const direction = wrapper.getAttribute('data-scroll-zoom'); // "in" or "out"
+    const fromScale = direction === 'in' ? 1 : 1.35;
+    const toScale   = direction === 'in' ? 1.35 : 1;
+
+    gsap.fromTo(img, { scale: fromScale }, {
+      scale: toScale,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrapper,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
   });
 })();

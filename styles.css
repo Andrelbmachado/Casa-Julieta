@@ -89,8 +89,10 @@ h1, h2, h3 {
 
 /* ---- Header ---- */
 .site-header {
-  position: relative;
+  position: absolute;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 100;
   background: transparent;
 }
@@ -235,6 +237,32 @@ h1, h2, h3 {
   text-align: center;
   padding: 2rem;
   padding-bottom: 8rem;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: -2;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 57, 18, 0.3) 0%,
+    rgba(0, 38, 12, 0.15) 50%,
+    rgba(0, 38, 12, 0.6) 100%
+  );
+  z-index: -1;
 }
 
 .hero-title {
@@ -428,6 +456,15 @@ h1 {
   padding-top: 2rem;
 }
 
+/* Divider between Sobre and Giro Bar */
+.section-divider {
+  width: 90%;
+  max-width: 1120px;
+  height: 1px;
+  margin: 0 auto;
+  background: var(--border);
+}
+
 .section-alt {
   background: var(--bg-alt);
   border-top: 1px solid var(--border);
@@ -450,8 +487,63 @@ h2 {
   margin: 0 0 1rem;
 }
 
+.about-row {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+.about-col {
+  flex: 1;
+  min-width: 0;
+}
+.about-img {
+  flex: 0 0 280px;
+  max-width: 280px;
+}
+.about-img img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+@media (max-width: 768px) {
+  .about-row { flex-direction: column; gap: 2rem; }
+  .about-img { flex: none; max-width: 200px; margin: 0 auto; }
+}
+
 .about-text { max-width: 62ch; }
 .about-text p { color: var(--muted); }
+
+/* ---- Typewriter effect ---- */
+.typewriter-line {
+  overflow: hidden;
+  border-right: 2px solid var(--gold);
+  white-space: nowrap;
+  width: 0;
+  color: var(--muted);
+}
+.typewriter-line.typing {
+  animation: typewriterExpand var(--tw-duration, 3s) steps(var(--tw-steps, 40), end) forwards,
+             twBlink 0.6s step-end infinite;
+}
+.typewriter-line.done {
+  width: 100%;
+  border-right: none;
+  white-space: normal;
+}
+/* Last line keeps blinking caret until done */
+.typewriter-line.typing:last-of-type {
+  animation: typewriterExpand var(--tw-duration, 3s) steps(var(--tw-steps, 40), end) forwards,
+             twBlink 0.6s step-end infinite;
+}
+
+@keyframes typewriterExpand {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+@keyframes twBlink {
+  50% { border-color: transparent; }
+}
 
 /* ---- Grid / Cards (legacy — kept for sub-pages) ---- */
 .grid {
@@ -530,6 +622,92 @@ h2 {
   flex-wrap: wrap;
 }
 
+/* ---- Bar Gallery (staggered / playful layout) ---- */
+.space-section--bar {
+  background: var(--bg);
+  min-height: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.space-section--bar .space-overlay {
+  background: none;
+}
+
+.bar-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  width: min(1120px, 90%);
+  margin: 0 auto;
+  padding: 3rem 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.bar-gallery-img {
+  overflow: hidden;
+  border-radius: var(--radius);
+  will-change: transform;
+}
+
+.bar-gallery-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.1s ease-out;
+}
+
+/* Staggered / playful offsets */
+.bar-img-1 {
+  transform: translateY(2rem) rotate(-1.2deg);
+  height: 320px;
+}
+.bar-img-2 {
+  transform: translateY(-1rem) rotate(0.8deg);
+  height: 360px;
+}
+.bar-img-3 {
+  transform: translateY(1.5rem) rotate(1deg);
+  height: 350px;
+}
+.bar-img-4 {
+  transform: translateY(-2rem) rotate(-0.6deg);
+  height: 300px;
+}
+
+.space-section--bar .space-content {
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+  .bar-gallery {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+  .bar-img-1, .bar-img-2, .bar-img-3, .bar-img-4 {
+    height: 200px;
+  }
+  .bar-img-1 { transform: translateY(1rem) rotate(-1deg); }
+  .bar-img-2 { transform: translateY(-0.6rem) rotate(0.6deg); }
+  .bar-img-3 { transform: translateY(0.8rem) rotate(0.8deg); }
+  .bar-img-4 { transform: translateY(-1rem) rotate(-0.5deg); }
+}
+
+@media (max-width: 480px) {
+  .bar-gallery {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .bar-img-1, .bar-img-2, .bar-img-3, .bar-img-4 {
+    height: 160px;
+  }
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -588,6 +766,16 @@ h2 {
 }
 
 /* ---- Map ---- */
+.loc-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.loc-heading svg {
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
 .map-wrapper {
   margin-top: 1.5rem;
   border-radius: var(--radius);
@@ -627,6 +815,58 @@ h2 {
 .contact-item svg { flex-shrink: 0; }
 .contact-item span { color: var(--muted); transition: color 0.3s; }
 .contact-item:hover span { color: var(--gold-light); }
+
+/* -- Instagram icon -- */
+.contact-icon-ig {
+  transition: transform 0.4s ease;
+}
+.contact-item:hover .contact-icon-ig {
+  animation: igPulse 0.6s ease;
+}
+@keyframes igPulse {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.15) rotate(-6deg); }
+  60%  { transform: scale(1.05) rotate(4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* -- Email icon (rounded envelope) -- */
+.contact-icon-email {
+  position: relative;
+  width: 30px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contact-icon-email svg {
+  overflow: visible;
+}
+.envelope-flap-path {
+  transform-origin: 12px 6px;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.contact-item:hover .envelope-flap-path {
+  transform: rotateX(180deg);
+}
+
+/* -- Map pin bounce -- */
+.contact-icon-pin {
+  transition: transform 0.3s ease;
+  transform-origin: center bottom;
+}
+.contact-item:hover .contact-icon-pin {
+  animation: pinBounce 0.6s ease;
+}
+@keyframes pinBounce {
+  0%   { transform: translateY(0); }
+  20%  { transform: translateY(-8px); }
+  40%  { transform: translateY(0); }
+  55%  { transform: translateY(-4px); }
+  70%  { transform: translateY(0); }
+  85%  { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
 
 /* ---- Footer ---- */
 .site-footer {
