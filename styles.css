@@ -684,20 +684,24 @@ body { animation: pageIn 0.45s ease both; }
 
   .main-nav {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 38, 12, 0.97);
     backdrop-filter: blur(12px);
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 5rem;
     gap: 2rem;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.35s;
     z-index: 99;
     border-top: none;
-    width: 100%;
-    padding: 0;
+    overflow: hidden;
   }
   .main-nav.open { opacity: 1; pointer-events: all; }
   .main-nav a { font-size: 1.2rem; }
