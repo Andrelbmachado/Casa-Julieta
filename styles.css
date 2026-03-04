@@ -622,90 +622,65 @@ h2 {
   flex-wrap: wrap;
 }
 
-/* ---- Bar Gallery (staggered / playful layout) ---- */
-.space-section--bar {
-  background: var(--bg);
-  min-height: auto;
-  padding-top: 0;
-  padding-bottom: 0;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.space-section--bar .space-overlay {
-  background: none;
-}
-
-.bar-gallery {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
-  width: min(1120px, 90%);
-  margin: 0 auto;
-  padding: 3rem 0 2rem;
-  position: relative;
-  z-index: 2;
-}
-
-.bar-gallery-img {
+/* ---- Bar Slideshow (fullscreen crossfade + Ken Burns) ---- */
+.bar-slideshow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
-  border-radius: var(--radius);
-  will-change: transform;
 }
 
-.bar-gallery-img img {
+.bar-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.bar-slide--active {
+  opacity: 1;
+}
+
+.bar-slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.1s ease-out;
+  animation: kenBurns 8s ease-in-out infinite alternate;
 }
 
-/* Staggered / playful offsets */
-.bar-img-1 {
-  transform: translateY(2rem) rotate(-1.2deg);
-  height: 320px;
+/* Alternate zoom directions per slide */
+.bar-slide:nth-child(1) img { animation-name: kenBurnsA; }
+.bar-slide:nth-child(2) img { animation-name: kenBurnsB; }
+.bar-slide:nth-child(3) img { animation-name: kenBurnsA; }
+.bar-slide:nth-child(4) img { animation-name: kenBurnsB; }
+
+@keyframes kenBurnsA {
+  0%   { transform: scale(1)    translate(0, 0); }
+  100% { transform: scale(1.12) translate(-1.5%, -1%); }
 }
-.bar-img-2 {
-  transform: translateY(-1rem) rotate(0.8deg);
-  height: 360px;
-}
-.bar-img-3 {
-  transform: translateY(1.5rem) rotate(1deg);
-  height: 350px;
-}
-.bar-img-4 {
-  transform: translateY(-2rem) rotate(-0.6deg);
-  height: 300px;
+@keyframes kenBurnsB {
+  0%   { transform: scale(1.12) translate(1%, 1.5%); }
+  100% { transform: scale(1)    translate(0, 0); }
 }
 
-.space-section--bar .space-content {
-  padding-top: 1rem;
-  padding-bottom: 4rem;
+/* Progress bar at bottom of slideshow */
+.bar-slideshow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 3;
+  animation: slideProgress 5s linear infinite;
+  opacity: 0.5;
 }
 
-@media (max-width: 768px) {
-  .bar-gallery {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-  .bar-img-1, .bar-img-2, .bar-img-3, .bar-img-4 {
-    height: 200px;
-  }
-  .bar-img-1 { transform: translateY(1rem) rotate(-1deg); }
-  .bar-img-2 { transform: translateY(-0.6rem) rotate(0.6deg); }
-  .bar-img-3 { transform: translateY(0.8rem) rotate(0.8deg); }
-  .bar-img-4 { transform: translateY(-1rem) rotate(-0.5deg); }
-}
-
-@media (max-width: 480px) {
-  .bar-gallery {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
-  }
-  .bar-img-1, .bar-img-2, .bar-img-3, .bar-img-4 {
-    height: 160px;
-  }
+@keyframes slideProgress {
+  0%   { width: 0; }
+  100% { width: 100%; }
 }
 
 .card {

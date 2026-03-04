@@ -313,32 +313,20 @@ document.querySelectorAll('a[href$=".html"]').forEach((a) => {
 })();
 
 // =====================================================
-// BAR GALLERY — Scroll-driven zoom in / zoom out
+// BAR SLIDESHOW — auto crossfade with Ken Burns
 // =====================================================
-(function initBarGalleryZoom() {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-  gsap.registerPlugin(ScrollTrigger);
+(function initBarSlideshow() {
+  const slides = document.querySelectorAll('.bar-slide');
+  if (slides.length < 2) return;
 
-  const items = document.querySelectorAll('[data-scroll-zoom]');
-  if (!items.length) return;
+  let current = 0;
+  const interval = 5000; // 5s per slide
 
-  items.forEach((wrapper) => {
-    const img = wrapper.querySelector('img');
-    if (!img) return;
+  function next() {
+    slides[current].classList.remove('bar-slide--active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('bar-slide--active');
+  }
 
-    const direction = wrapper.getAttribute('data-scroll-zoom'); // "in" or "out"
-    const fromScale = direction === 'in' ? 1 : 1.35;
-    const toScale   = direction === 'in' ? 1.35 : 1;
-
-    gsap.fromTo(img, { scale: fromScale }, {
-      scale: toScale,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: wrapper,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1,
-      }
-    });
-  });
+  setInterval(next, interval);
 })();
